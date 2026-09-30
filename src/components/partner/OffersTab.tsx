@@ -78,26 +78,26 @@ export function OffersTab() {
               >
                 <div>
                   {/* Hero Banner with Badge */}
-                  <div className="relative h-48 w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                  <div className="relative h-48 w-full bg-zinc-900 dark:bg-black/90 overflow-hidden flex items-center justify-center p-3">
                     <img
                       src={offer.heroImage}
                       alt={offer.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none" />
                     
                     {/* Top Badges */}
                     <div className="absolute top-3 left-3 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#D3F37F] text-xs font-bold tracking-wider">
+                      <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#D3F37F] text-xs font-bold tracking-wider border border-white/10">
                         {offer.badgeText}
                       </span>
                     </div>
 
                     <div className="absolute bottom-3 left-3 right-3 text-white">
-                      <h3 className="text-base sm:text-lg font-bold leading-tight">
+                      <h3 className="text-base sm:text-lg font-bold leading-tight drop-shadow-sm">
                         {offer.title}
                       </h3>
-                      <p className="text-xs text-zinc-200 mt-0.5">
+                      <p className="text-xs text-zinc-200 mt-0.5 drop-shadow-sm font-medium">
                         {offer.subtitle}
                       </p>
                     </div>

@@ -266,13 +266,13 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                     className="apple-card overflow-hidden cursor-pointer group hover:scale-[1.01] transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="relative h-36 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                      <div className="relative h-36 w-full overflow-hidden bg-zinc-900/90 dark:bg-black/80 flex items-center justify-center p-2.5">
                         <img
                           src={offer.heroImage}
                           alt={offer.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[#D3F37F] text-[10px] font-bold tracking-wider">
+                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md text-[#D3F37F] text-[10px] font-bold tracking-wider border border-white/10">
                           {offer.badgeText}
                         </div>
                         {isUnlocked && (

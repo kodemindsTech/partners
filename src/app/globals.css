@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --retner-lime: #9CE06F;
+    --retner-lime-light: #D3F37F;
+    --retner-dark: #1F251D;
+    --retner-black: #111410;
+    --apple-bg: #FFFFFF;
+    --apple-grouped: #F5F5F7;
+    --apple-text-primary: #1D1D1F;
+    --apple-text-secondary: #6E6E73;
+    --apple-border: rgba(0, 0, 0, 0.08);
+    --apple-card: #FFFFFF;
+    --apple-sheet: #FFFFFF;
+  }
+
+  .dark {
+    --retner-lime: #9CE06F;
+    --retner-lime-light: #D3F37F;
+    --retner-dark: #1F251D;
+    --retner-black: #0B0D0A;
+    --apple-bg: #000000;
+    --apple-grouped: #121214;
+    --apple-text-primary: #F5F5F7;
+    --apple-text-secondary: #86868B;
+    --apple-border: rgba(255, 255, 255, 0.12);
+    --apple-card: #1C1C1E;
+    --apple-sheet: #1C1C1E;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--apple-grouped);
+  color: var(--apple-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apple HIG Custom Utility Classes */
+.apple-card {
+  background-color: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 6px 16px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05), 0 10px 24px rgba(0, 0, 0, 0.05);
+}
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.dark .glass-header {
+  background: rgba(28, 28, 30, 0.82);
+}
+
+.glass-tabbar {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--apple-border);
+}
+
+.dark .glass-tabbar {
+  background: rgba(28, 28, 30, 0.88);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom shimmer animation for quick-commerce cards */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
 }

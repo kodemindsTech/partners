@@ -31,6 +31,8 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
   const [copied, setCopied] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
 
+  if (!currentPartner) return null;
+
   const currentTier = tiers.find((t) => t.id === currentPartner.tierId) || tiers[0];
   const nextTier = tiers.find((t) => t.order === currentTier.order + 1);
 
@@ -113,7 +115,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
         </div>
       </div>
 
-      {/* Four Earnings Cards (Full Width Desktop Grid) */}
+      {/* Four Earnings Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Earned */}
         <div className="apple-card p-5 flex flex-col justify-between">
@@ -235,7 +237,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
             </div>
           </div>
 
-          {/* Live Milestone Offers Section (Grid Across Desktop) */}
+          {/* Live Milestone Offers Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -264,7 +266,6 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                     className="apple-card overflow-hidden cursor-pointer group hover:scale-[1.01] transition-transform flex flex-col justify-between"
                   >
                     <div>
-                      {/* Hero image with badge */}
                       <div className="relative h-36 w-full overflow-hidden bg-zinc-100">
                         <img
                           src={offer.heroImage}
@@ -292,7 +293,6 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                     </div>
 
                     <div className="p-4 pt-0">
-                      {/* Progress gauge */}
                       <div className="space-y-1">
                         <div className="flex justify-between text-[11px] text-zinc-500 font-semibold">
                           <span>Target Progress</span>
@@ -317,9 +317,8 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
           </div>
         </div>
 
-        {/* Right Column (4 Columns: Tier Progress, Recent Activity & Marketing Kit) */}
+        {/* Right Column */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Tier Progress Bar Card */}
           {nextTier && (
             <div className="apple-card p-5 space-y-3">
               <div className="flex items-center justify-between text-xs">
@@ -355,30 +354,34 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
           {/* Recent Activity Feed */}
           <div className="apple-card p-5 space-y-3">
             <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-              Recent Partner Activity
+              Recent Activity
             </h3>
 
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {recentActivities.map((act) => (
-                <div key={act.id} className="py-2.5 flex items-center justify-between first:pt-0 last:pb-0">
-                  <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                    <div className="w-2 h-2 rounded-full bg-[#9CE06F] flex-shrink-0" />
-                    <div className="min-w-0">
-                      <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate">
-                        {act.title}
-                      </div>
-                      <div className="text-[10px] text-zinc-400">
-                        {formatTimeAgo(act.time)}
+              {recentActivities.length === 0 ? (
+                <p className="text-xs text-zinc-400 py-3 text-center">No recent activity yet.</p>
+              ) : (
+                recentActivities.map((act) => (
+                  <div key={act.id} className="py-2.5 flex items-center justify-between first:pt-0 last:pb-0">
+                    <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                      <div className="w-2 h-2 rounded-full bg-[#9CE06F] flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate">
+                          {act.title}
+                        </div>
+                        <div className="text-[10px] text-zinc-400">
+                          {formatTimeAgo(act.time)}
+                        </div>
                       </div>
                     </div>
+                    {act.amount && (
+                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex-shrink-0 font-mono">
+                        {act.amount}
+                      </span>
+                    )}
                   </div>
-                  {act.amount && (
-                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex-shrink-0 font-mono">
-                      {act.amount}
-                    </span>
-                  )}
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 

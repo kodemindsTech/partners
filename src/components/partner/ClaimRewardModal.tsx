@@ -16,12 +16,12 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
   const { currentPartner, claimOffer } = usePortalStore();
 
   const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState(currentPartner.phone);
-  const [email, setEmail] = useState(currentPartner.email);
+  const [phone, setPhone] = useState(currentPartner?.phone || "");
+  const [email, setEmail] = useState(currentPartner?.email || "");
   const [isClaiming, setIsClaiming] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  if (!isOpen || !offer) return null;
+  if (!isOpen || !offer || !currentPartner) return null;
 
   const handleClaim = (e: React.FormEvent) => {
     e.preventDefault();

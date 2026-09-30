@@ -14,6 +14,8 @@ export function OffersTab() {
   const [selectedOfferForDetail, setSelectedOfferForDetail] = useState<Offer | null>(null);
   const [claimingOffer, setClaimingOffer] = useState<Offer | null>(null);
 
+  if (!currentPartner) return null;
+
   // Filter claims for current partner
   const partnerClaims = claims.filter((c) => c.partnerId === currentPartner.id);
 

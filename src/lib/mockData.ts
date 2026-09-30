@@ -1,5 +1,3 @@
-"use client";
-
 import { 
   Partner, 
   Lead, 
@@ -10,8 +8,7 @@ import {
   Tier, 
   ProgramSettings, 
   AuditLog, 
-  RewardClaim,
-  LeadStatus
+  RewardClaim
 } from "./types";
 
 export const initialCommissionPlans: CommissionPlan[] = [
@@ -104,395 +101,50 @@ export const initialTiers: Tier[] = [
   },
 ];
 
-export const initialPartner: Partner = {
-  id: "part-101",
-  name: "Rahul Sharma",
-  phone: "+91 98765 43210",
-  email: "rahul@scalexmedia.in",
-  type: "marketing_agency",
-  companyName: "ScaleX Growth Agency",
-  city: "Bengaluru",
-  website: "https://scalexmedia.in",
-  d2cBrandsCount: 18,
-  status: "active",
-  tierId: "tier-gold",
-  referralCode: "RAHUL24",
-  customSlug: "scalex",
-  kyc: {
-    pan: "ABCPS1234F",
-    legalName: "Rahul Sharma",
-    gstin: "29ABCDE1234F1Z5",
-    status: "verified",
-    documents: [
-      {
-        type: "cancelled_cheque",
-        url: "/docs/cheque.pdf",
-        uploadedAt: "2026-09-01T10:00:00Z",
-      }
-    ],
-  },
-  payoutMethods: [
-    {
-      id: "pm-1",
-      type: "upi",
-      upiId: "rahul.scalex@okhdfcbank",
-      holderName: "Rahul Sharma",
-      verified: true,
-    },
-    {
-      id: "pm-2",
-      type: "bank_account",
-      accountNumberMasked: "••••••••4417",
-      accountNumberFull: "50100439284417",
-      ifsc: "HDFC0000240",
-      holderName: "ScaleX Media LLP",
-      verified: true,
-    }
-  ],
-  notificationPrefs: {
-    whatsapp: true,
-    email: true,
-  },
-  stats: {
-    clicks: 342,
-    uniqueVisitors: 289,
-    leadsCount: 14,
-    paidCount: 4,
-    conversionRate: 28.5,
-    totalEarnedPaise: 4850000,   // ₹48,500
-    availablePaise: 2400000,     // ₹24,000
-    pendingPaise: 1200000,       // ₹12,000
-    paidOutPaise: 1250000,       // ₹12,500
-  },
-  createdAt: "2026-07-15T09:30:00Z",
-};
-
-export const initialAllPartners: Partner[] = [
-  initialPartner,
-  {
-    id: "part-102",
-    name: "Pooja Mehta",
-    phone: "+91 99887 76655",
-    email: "pooja@d2cgrowth.co",
-    type: "shopify_agency",
-    companyName: "D2C Studio Lab",
-    city: "Mumbai",
-    website: "https://d2cgrowth.co",
-    d2cBrandsCount: 25,
-    status: "active",
-    tierId: "tier-platinum",
-    referralCode: "POOJA99",
-    kyc: {
-      pan: "AAAPM9981K",
-      legalName: "Pooja Mehta",
-      status: "verified",
-      documents: [],
-    },
-    payoutMethods: [
-      {
-        id: "pm-3",
-        type: "upi",
-        upiId: "pooja@icici",
-        holderName: "Pooja Mehta",
-        verified: true,
-      }
-    ],
-    notificationPrefs: { whatsapp: true, email: true },
-    stats: {
-      clicks: 812,
-      uniqueVisitors: 690,
-      leadsCount: 32,
-      paidCount: 16,
-      conversionRate: 50.0,
-      totalEarnedPaise: 12400000,
-      availablePaise: 4200000,
-      pendingPaise: 3500000,
-      paidOutPaise: 4700000,
-    },
-    createdAt: "2026-06-10T11:00:00Z",
-  },
-  {
-    id: "part-103",
-    name: "Arjun Nair",
-    phone: "+91 97112 33445",
-    email: "arjun@nairfreelance.dev",
-    type: "freelancer",
-    companyName: "Arjun Dev Consulting",
-    city: "Kochi",
-    website: "https://arjun.dev",
-    d2cBrandsCount: 6,
-    status: "pending_approval",
-    tierId: "tier-silver",
-    referralCode: "ARJUN07",
-    kyc: {
-      pan: "ABCPN4432Q",
-      legalName: "Arjun Nair",
-      status: "pending",
-      documents: [],
-    },
-    payoutMethods: [],
-    notificationPrefs: { whatsapp: true, email: false },
-    stats: {
-      clicks: 22,
-      uniqueVisitors: 19,
-      leadsCount: 1,
-      paidCount: 0,
-      conversionRate: 0,
-      totalEarnedPaise: 0,
-      availablePaise: 0,
-      pendingPaise: 0,
-      paidOutPaise: 0,
-    },
-    createdAt: "2026-09-28T14:15:00Z",
-  },
-];
-
-export const initialLeads: Lead[] = [
-  {
-    id: "lead-201",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "NutriPulse Health",
-    website: "nutripulse.in",
-    shopDomain: "nutripulse.myshopify.com",
-    source: "manual",
-    contact: {
-      name: "Vikram Singhania",
-      phone: "+91 98200 11223",
-      email: "vikram@nutripulse.in",
-    },
-    monthlyRevenueRange: "₹25L – ₹50L",
-    currentToolsUsed: "Klaviyo, Wati",
-    notes: "Founder keen to replace manual WhatsApp cart recovery with Retner AI engine.",
-    status: "paid",
-    conflictStatus: "none",
-    attributedAt: "2026-09-02T11:30:00Z",
-    protectionExpiresAt: "2026-12-01T11:30:00Z",
-    commissionEarnedPaise: 600000,
-    events: [
-      {
-        id: "ev-1",
-        leadId: "lead-201",
-        fromStatus: null,
-        toStatus: "new",
-        note: "Lead submitted manually by partner Rahul Sharma",
-        visibleToPartner: true,
-        actor: { type: "partner", name: "Rahul Sharma" },
-        timestamp: "2026-09-02T11:30:00Z",
-      },
-      {
-        id: "ev-2",
-        leadId: "lead-201",
-        fromStatus: "new",
-        toStatus: "demo_booked",
-        note: "Founder booked 30m demo call via Cal.com",
-        visibleToPartner: true,
-        actor: { type: "system", name: "Cal.com Integration" },
-        timestamp: "2026-09-05T15:00:00Z",
-      },
-      {
-        id: "ev-3",
-        leadId: "lead-201",
-        fromStatus: "demo_booked",
-        toStatus: "paid",
-        note: "Brand converted to Growth Annual Plan (₹1,20,000/yr net)",
-        visibleToPartner: true,
-        actor: { type: "admin", name: "Priya (Retner Sales)" },
-        timestamp: "2026-09-12T16:45:00Z",
-      }
-    ],
-  },
-  {
-    id: "lead-202",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "Aura Essentials",
-    website: "auraessentials.co",
-    shopDomain: "aura-essentials-in.myshopify.com",
-    source: "link",
-    contact: {
-      name: "Ananya Iyer",
-      phone: "+91 97690 99881",
-      email: "ananya@auraessentials.co",
-    },
-    monthlyRevenueRange: "₹50L – ₹1Cr",
-    status: "onboarded",
-    conflictStatus: "none",
-    attributedAt: "2026-08-20T10:15:00Z",
-    protectionExpiresAt: "2026-11-18T10:15:00Z",
-    commissionEarnedPaise: 1200000,
-    events: [
-      {
-        id: "ev-4",
-        leadId: "lead-202",
-        fromStatus: null,
-        toStatus: "new",
-        note: "Referred via partner link /r/RAHUL24?c=instagram",
-        visibleToPartner: true,
-        actor: { type: "system", name: "Attribution Engine" },
-        timestamp: "2026-08-20T10:15:00Z",
-      },
-      {
-        id: "ev-5",
-        leadId: "lead-202",
-        fromStatus: "paid",
-        toStatus: "onboarded",
-        note: "Shopify WhatsApp catalog & journey live",
-        visibleToPartner: true,
-        actor: { type: "admin", name: "Retner CS Team" },
-        timestamp: "2026-09-10T12:00:00Z",
-      }
-    ],
-  },
-  {
-    id: "lead-203",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "Kalyan Organics",
-    website: "kalyanorganics.com",
-    source: "manual",
-    contact: {
-      name: "Ramesh Kalyan",
-      phone: "+91 94432 10987",
-      email: "ramesh@kalyanorganics.com",
-    },
-    monthlyRevenueRange: "₹10L – ₹25L",
-    status: "demo_booked",
-    conflictStatus: "none",
-    attributedAt: "2026-09-24T09:00:00Z",
-    protectionExpiresAt: "2026-12-23T09:00:00Z",
-    commissionEarnedPaise: 0,
-    events: [
-      {
-        id: "ev-6",
-        leadId: "lead-203",
-        fromStatus: "new",
-        toStatus: "demo_booked",
-        note: "Demo scheduled for Friday 3 PM",
-        visibleToPartner: true,
-        actor: { type: "admin", name: "Kunal (Sales)" },
-        timestamp: "2026-09-25T11:00:00Z",
-      }
-    ],
-  },
-  {
-    id: "lead-204",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "Urban Snax",
-    website: "urbansnax.in",
-    source: "link",
-    contact: {
-      name: "Sameer Joshi",
-      phone: "+91 98111 22334",
-      email: "sameer@urbansnax.in",
-    },
-    monthlyRevenueRange: "₹15L – ₹30L",
-    status: "trial",
-    conflictStatus: "none",
-    attributedAt: "2026-09-20T18:20:00Z",
-    protectionExpiresAt: "2026-12-19T18:20:00Z",
-    commissionEarnedPaise: 0,
-    events: [],
-  },
-  {
-    id: "lead-205",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "Zen Lifestyle Apparel",
-    website: "zenlifestyle.co",
-    source: "manual",
-    contact: {
-      name: "Tanvi Kapoor",
-      phone: "+91 99200 44556",
-      email: "tanvi@zenlifestyle.co",
-    },
-    monthlyRevenueRange: "₹5L – ₹10L",
-    status: "lost",
-    lostReason: "Selected another marketing solution due to custom ERP requirement",
-    conflictStatus: "none",
-    attributedAt: "2026-08-15T14:00:00Z",
-    protectionExpiresAt: "2026-11-13T14:00:00Z",
-    commissionEarnedPaise: 0,
-    events: [],
-  },
-  {
-    id: "lead-206",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    brandName: "PureBrew Cold Brew",
-    website: "purebrew.in",
-    source: "manual",
-    contact: {
-      name: "Deepak Verma",
-      phone: "+91 98450 12345",
-      email: "deepak@purebrew.in",
-    },
-    monthlyRevenueRange: "₹20L – ₹40L",
-    status: "new",
-    conflictStatus: "pending_review",
-    attributedAt: "2026-09-29T10:00:00Z",
-    protectionExpiresAt: "2026-12-28T10:00:00Z",
-    commissionEarnedPaise: 0,
-    events: [
-      {
-        id: "ev-7",
-        leadId: "lead-206",
-        fromStatus: null,
-        toStatus: "new",
-        note: "Submitted but domain matches prior inquiry by partner Pooja Mehta. In conflict queue.",
-        visibleToPartner: false,
-        actor: { type: "system", name: "Conflict Engine" },
-        timestamp: "2026-09-29T10:00:00Z",
-      }
-    ],
-  }
-];
-
 export const initialOffers: Offer[] = [
   {
     id: "off-1",
     title: "AirPods Pro Milestone",
     subtitle: "Refer 3 paid clients this month",
     badgeText: "HOT REWARD",
-    description: "Refer 3 D2C brands that convert to paid Retner plans by Oct 31, 2026 and get Apple AirPods Pro (2nd Gen) delivered to your doorstep.",
+    description: "Refer 3 D2C brands that convert to paid Retner plans and get Apple AirPods Pro (2nd Gen) delivered to your doorstep.",
     heroImage: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&auto=format&fit=crop&q=80",
     rewardType: "milestone_gift",
     rewardName: "Apple AirPods Pro (2nd Gen)",
-    rewardValuePaise: 2490000, // ₹24,900
+    rewardValuePaise: 2490000,
     targetCount: 3,
     targetStatus: "paid",
     windowOnly: true,
     startAt: "2026-09-01T00:00:00Z",
-    endAt: "2026-10-31T23:59:59Z",
+    endAt: "2026-12-31T23:59:59Z",
     status: "live",
     eligibleTiers: ["tier-silver", "tier-gold", "tier-platinum"],
     terms: "Brand must be active for at least 7 days. Limit 1 claim per agency. Shipping within India only.",
     featured: true,
-    userProgress: 2,
+    userProgress: 0,
     unlocked: false,
   },
   {
     id: "off-2",
     title: "₹5,000 Festive Cash Bonus",
     subtitle: "Direct credit to your earnings ledger",
-    badgeText: "DIWALI SPECIAL",
-    description: "Close 2 paid brand referrals before Diwali and receive an extra ₹5,000 cash bonus directly in your withdrawable balance.",
+    badgeText: "SPECIAL BONUS",
+    description: "Close 2 paid brand referrals and receive an extra ₹5,000 cash bonus directly in your withdrawable balance.",
     heroImage: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80",
     rewardType: "cash_bonus",
     rewardName: "₹5,000 Ledger Credit",
-    rewardValuePaise: 500000, // ₹5,000
+    rewardValuePaise: 500000,
     targetCount: 2,
     targetStatus: "paid",
     windowOnly: false,
     startAt: "2026-09-15T00:00:00Z",
-    endAt: "2026-11-15T23:59:59Z",
+    endAt: "2026-12-31T23:59:59Z",
     status: "live",
     eligibleTiers: ["tier-silver", "tier-gold", "tier-platinum"],
     terms: "Stacks with standard tier commission rates. Standard 30-day hold applies.",
     featured: true,
-    userProgress: 2,
-    unlocked: true,
+    userProgress: 0,
+    unlocked: false,
   },
   {
     id: "off-3",
@@ -503,7 +155,7 @@ export const initialOffers: Offer[] = [
     heroImage: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&auto=format&fit=crop&q=80",
     rewardType: "voucher",
     rewardName: "Amazon ₹2,000 E-Voucher",
-    rewardValuePaise: 200000, // ₹2,000
+    rewardValuePaise: 200000,
     targetCount: 1,
     targetStatus: "demo_booked",
     windowOnly: false,
@@ -513,132 +165,9 @@ export const initialOffers: Offer[] = [
     eligibleTiers: ["tier-silver", "tier-gold", "tier-platinum"],
     terms: "Voucher code sent instantly via WhatsApp and Email upon claim.",
     featured: false,
-    userProgress: 1,
-    unlocked: true,
+    userProgress: 0,
+    unlocked: false,
   },
-];
-
-export const initialEarnings: Earning[] = [
-  {
-    id: "earn-301",
-    partnerId: "part-101",
-    leadId: "lead-201",
-    leadBrandName: "NutriPulse Health",
-    type: "commission",
-    amountPaise: 600000,
-    tdsAmountPaise: 30000,
-    netAmountPaise: 570000,
-    status: "available",
-    availableAt: "2026-09-20T00:00:00Z",
-    createdAt: "2026-08-20T12:00:00Z",
-    reason: "15% Gold Tier Commission on Growth Plan (₹40,000 bill)",
-    planSnapshot: {
-      planId: "plan-3",
-      planName: "Gold Partner Tier Plan",
-      rateOrFixed: "15%",
-    },
-  },
-  {
-    id: "earn-302",
-    partnerId: "part-101",
-    leadId: "lead-202",
-    leadBrandName: "Aura Essentials",
-    type: "commission",
-    amountPaise: 1800000,
-    tdsAmountPaise: 90000,
-    netAmountPaise: 1710000,
-    status: "available",
-    availableAt: "2026-09-10T00:00:00Z",
-    createdAt: "2026-08-10T14:30:00Z",
-    reason: "15% Gold Tier Commission on Enterprise Annual Tier (₹1,20,000 bill)",
-    planSnapshot: {
-      planId: "plan-3",
-      planName: "Gold Partner Tier Plan",
-      rateOrFixed: "15%",
-    },
-  },
-  {
-    id: "earn-303",
-    partnerId: "part-101",
-    leadId: "lead-201",
-    leadBrandName: "NutriPulse Health",
-    type: "commission",
-    amountPaise: 1200000,
-    tdsAmountPaise: 60000,
-    netAmountPaise: 1140000,
-    status: "pending",
-    availableAt: "2026-10-15T00:00:00Z",
-    createdAt: "2026-09-15T10:00:00Z",
-    reason: "30-day hold period for September bill renewal",
-    planSnapshot: {
-      planId: "plan-3",
-      planName: "Gold Partner Tier Plan",
-      rateOrFixed: "15%",
-    },
-  },
-  {
-    id: "earn-304",
-    partnerId: "part-101",
-    type: "bonus",
-    amountPaise: 1250000,
-    tdsAmountPaise: 62500,
-    netAmountPaise: 1187500,
-    status: "paid",
-    availableAt: "2026-08-01T00:00:00Z",
-    createdAt: "2026-07-25T11:00:00Z",
-    reason: "Q3 Early Bird Partner Onboarding Bounty",
-    planSnapshot: {
-      planId: "plan-1",
-      planName: "Standard",
-      rateOrFixed: "Flat",
-    },
-    payoutId: "pay-401",
-  },
-];
-
-export const initialPayouts: PayoutRequest[] = [
-  {
-    id: "pay-401",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    amountPaise: 1250000, // ₹12,500
-    tdsPaise: 62500,      // ₹625
-    netPayablePaise: 1187500, // ₹11,875
-    method: {
-      id: "pm-1",
-      type: "upi",
-      upiId: "rahul.scalex@okhdfcbank",
-      holderName: "Rahul Sharma",
-      verified: true,
-    },
-    status: "paid",
-    earningIds: ["earn-304"],
-    requestNote: "July payouts for onboarding bonuses",
-    reviewedBy: "Aditi (Finance)",
-    utr: "HDFCN26239104821",
-    proofUrl: "/proofs/utr_receipt.png",
-    requestedAt: "2026-08-02T10:00:00Z",
-    paidAt: "2026-08-04T16:20:00Z",
-  }
-];
-
-export const initialRewardClaims: RewardClaim[] = [
-  {
-    id: "claim-501",
-    offerId: "off-3",
-    offerTitle: "₹2,000 Amazon Voucher",
-    partnerId: "part-101",
-    partnerName: "Rahul Sharma",
-    rewardName: "Amazon ₹2,000 E-Voucher",
-    rewardType: "voucher",
-    deliveryDetails: {
-      email: "rahul@scalexmedia.in",
-    },
-    voucherCode: "AMZN-RETR-8849-2026",
-    status: "delivered",
-    claimedAt: "2026-09-06T15:30:00Z",
-    handledAt: "2026-09-07T11:00:00Z",
-  }
 ];
 
 export const initialSettings: ProgramSettings = {
@@ -646,39 +175,17 @@ export const initialSettings: ProgramSettings = {
   leadProtectionDays: 90,
   autoApprovePartners: false,
   defaultHoldDays: 30,
-  minPayoutPaise: 100000, // ₹1,000
+  minPayoutPaise: 100000,
   maxOpenPayouts: 1,
   tdsRatePercent: 5.0,
-  tdsAnnualThresholdPaise: 1500000, // ₹15,000
+  tdsAnnualThresholdPaise: 1500000,
   notificationAlertEmails: ["partners@retner.ai", "finance@retner.ai"],
 };
 
-export const initialAuditLogs: AuditLog[] = [
-  {
-    id: "log-1",
-    actor: "Admin (Aditi)",
-    action: "payout_marked_paid",
-    entity: "payout",
-    entityId: "pay-401",
-    details: "Marked payout ₹11,875 net paid via UTR HDFCN26239104821",
-    timestamp: "2026-08-04T16:20:00Z",
-  },
-  {
-    id: "log-2",
-    actor: "Admin (Vikram)",
-    action: "partner_tier_promoted",
-    entity: "partner",
-    entityId: "part-101",
-    details: "Promoted Rahul Sharma from Silver to Gold partner (15% rate)",
-    timestamp: "2026-09-10T12:05:00Z",
-  },
-  {
-    id: "log-3",
-    actor: "System",
-    action: "duplicate_detected",
-    entity: "lead",
-    entityId: "lead-206",
-    details: "Domain purebrew.in matched prior inquiry. Moved to conflict queue.",
-    timestamp: "2026-09-29T10:00:00Z",
-  }
-];
+// Clean initial data (No hardcoded dummy records)
+export const initialPartners: Partner[] = [];
+export const initialLeads: Lead[] = [];
+export const initialEarnings: Earning[] = [];
+export const initialPayouts: PayoutRequest[] = [];
+export const initialRewardClaims: RewardClaim[] = [];
+export const initialAuditLogs: AuditLog[] = [];

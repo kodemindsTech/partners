@@ -31,6 +31,8 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
+  if (!currentPartner) return null;
+
   // Filter leads for the active partner
   const partnerLeads = leads.filter((l) => l.partnerId === currentPartner.id);
 

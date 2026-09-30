@@ -18,8 +18,7 @@ import {
   PartnerStatus
 } from "./types";
 import { 
-  initialPartner, 
-  initialAllPartners, 
+  initialPartners,
   initialLeads, 
   initialOffers, 
   initialEarnings, 
@@ -32,18 +31,27 @@ import {
 } from "./mockData";
 import { normalizeDomain } from "./utils";
 
-const STORAGE_KEY = "retner_partner_portal_state_v2";
+const STORAGE_KEY = "retner_partner_portal_state_v3_clean";
 
 export interface AuthSession {
   userType: "partner" | "admin" | null;
   partnerId?: string;
   adminEmail?: string;
   adminRole?: string;
+  lastActiveAt?: number;
+}
+
+interface OtpVerificationSession {
+  destination: string;
+  code: string;
+  expiresAt: number;
+  attempts: number;
+  sentAt: number;
 }
 
 interface AppState {
   authSession: AuthSession;
-  currentPartner: Partner;
+  currentPartner: Partner | null;
   partners: Partner[];
   leads: Lead[];
   offers: Offer[];
@@ -61,7 +69,13 @@ function getInitialState(): AppState {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Ensure sessions older than 12 hours expire automatically
+        if (parsed.authSession?.lastActiveAt && Date.now() - parsed.authSession.lastActiveAt > 12 * 60 * 60 * 1000) {
+          parsed.authSession = { userType: null };
+          parsed.currentPartner = null;
+        }
+        return parsed;
       }
     } catch {
       // Fallback
@@ -69,11 +83,10 @@ function getInitialState(): AppState {
   }
   return {
     authSession: {
-      userType: "partner",
-      partnerId: initialPartner.id,
+      userType: null, // NO AUTO LOGIN
     },
-    currentPartner: initialPartner,
-    partners: initialAllPartners,
+    currentPartner: null,
+    partners: initialPartners,
     leads: initialLeads,
     offers: initialOffers,
     earnings: initialEarnings,
@@ -88,6 +101,11 @@ function getInitialState(): AppState {
 
 let globalState: AppState = getInitialState();
 const listeners = new Set<() => void>();
+
+// OTP rate limit tracker (destination -> array of timestamps in last 10 mins)
+const otpRateLimitTracker: Record<string, number[]> = {};
+// Active OTP verification cache
+let activeOtpSession: OtpVerificationSession | null = null;
 
 function notify() {
   if (typeof window !== "undefined") {
@@ -111,9 +129,61 @@ export function usePortalStore() {
     };
   }, []);
 
-  // Auth Action: Partner Login via Phone/Email
-  const partnerLogin = (identifier: string) => {
-    const cleanId = identifier.trim().toLowerCase();
+  // Security: Request OTP with Rate Limiting (max 3 sends per 10 minutes)
+  const sendPartnerOtp = (phoneOrEmail: string): { success: boolean; simulatedCode: string } => {
+    const cleanId = phoneOrEmail.trim().toLowerCase();
+    if (!cleanId || cleanId.length < 5) {
+      throw new Error("Please enter a valid phone number or email address.");
+    }
+
+    const now = Date.now();
+    const windowStart = now - 10 * 60 * 1000;
+    const history = (otpRateLimitTracker[cleanId] || []).filter((t) => t > windowStart);
+
+    if (history.length >= 3) {
+      throw new Error("Rate limit exceeded: Maximum 3 OTP requests allowed per 10 minutes. Please wait.");
+    }
+
+    // Generate secure 6-digit numeric code
+    const simulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+    activeOtpSession = {
+      destination: cleanId,
+      code: simulatedCode,
+      expiresAt: now + 5 * 60 * 1000, // 5 min TTL
+      attempts: 0,
+      sentAt: now,
+    };
+
+    otpRateLimitTracker[cleanId] = [...history, now];
+    return { success: true, simulatedCode };
+  };
+
+  // Security: Verify OTP with 5 Attempt Max & TTL Check
+  const verifyPartnerOtp = (phoneOrEmail: string, enteredCode: string) => {
+    const cleanId = phoneOrEmail.trim().toLowerCase();
+    const now = Date.now();
+
+    if (!activeOtpSession || activeOtpSession.destination !== cleanId) {
+      throw new Error("No active OTP request found. Please request a new code.");
+    }
+
+    if (now > activeOtpSession.expiresAt) {
+      activeOtpSession = null;
+      throw new Error("OTP has expired (5-minute limit). Please request a new code.");
+    }
+
+    if (activeOtpSession.attempts >= 5) {
+      activeOtpSession = null;
+      throw new Error("Too many incorrect attempts. For security, this OTP is now invalid. Please request a new code.");
+    }
+
+    if (activeOtpSession.code !== enteredCode.trim()) {
+      activeOtpSession.attempts += 1;
+      const remaining = 5 - activeOtpSession.attempts;
+      throw new Error(`Invalid verification code. ${remaining} attempt${remaining === 1 ? "" : "s"} remaining.`);
+    }
+
+    // OTP Verified! Find Partner
     const partner = globalState.partners.find(
       (p) =>
         p.email.toLowerCase() === cleanId ||
@@ -122,14 +192,21 @@ export function usePortalStore() {
     );
 
     if (!partner) {
-      throw new Error("No partner account found with this mobile or email. Please sign up first.");
+      throw new Error("No partner account found for this mobile/email. Please sign up to create your account.");
     }
+
+    if (partner.status === "suspended" || partner.status === "rejected") {
+      throw new Error(`Your partner account is currently ${partner.status}. Please contact partner support.`);
+    }
+
+    activeOtpSession = null;
 
     globalState = {
       ...globalState,
       authSession: {
         userType: "partner",
         partnerId: partner.id,
+        lastActiveAt: Date.now(),
       },
       currentPartner: partner,
     };
@@ -150,17 +227,22 @@ export function usePortalStore() {
   }) => {
     const cleanEmail = data.email.trim().toLowerCase();
     const cleanPhone = data.phone.trim();
+    const cleanName = data.name.trim();
+
+    if (!cleanName || !cleanEmail || !cleanPhone || !data.city) {
+      throw new Error("Please complete all required fields.");
+    }
 
     // Check duplicate email or phone
     const existing = globalState.partners.find(
       (p) => p.email.toLowerCase() === cleanEmail || p.phone === cleanPhone
     );
     if (existing) {
-      throw new Error("A partner with this email or mobile number already exists.");
+      throw new Error("A partner account with this email or mobile number is already registered.");
     }
 
     const newId = `part-${Date.now()}`;
-    const codeBase = data.name.split(" ")[0].toUpperCase().replace(/[^A-Z]/g, "") || "RETN";
+    const codeBase = cleanName.split(" ")[0].toUpperCase().replace(/[^A-Z]/g, "") || "RETN";
     const referralCode = `${codeBase}${Math.floor(10 + Math.random() * 90)}`;
     const now = new Date().toISOString();
 
@@ -169,20 +251,20 @@ export function usePortalStore() {
 
     const newPartner: Partner = {
       id: newId,
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
+      name: cleanName,
+      phone: cleanPhone,
+      email: cleanEmail,
       type: data.type,
-      companyName: data.companyName,
-      city: data.city,
-      website: data.website,
+      companyName: data.companyName?.trim(),
+      city: data.city.trim(),
+      website: data.website?.trim(),
       d2cBrandsCount: Number(data.d2cBrandsCount) || 1,
       status: initialStatus,
       tierId: "tier-silver",
       referralCode,
       kyc: {
         pan: "",
-        legalName: data.name,
+        legalName: cleanName,
         status: "not_submitted",
         documents: [],
       },
@@ -204,7 +286,7 @@ export function usePortalStore() {
 
     const auditEntry: AuditLog = {
       id: `log-${Date.now()}`,
-      actor: `New Partner (${data.name})`,
+      actor: `Partner (${cleanName})`,
       action: "partner_signup",
       entity: "partner",
       entityId: newId,
@@ -219,6 +301,7 @@ export function usePortalStore() {
       authSession: {
         userType: "partner",
         partnerId: newId,
+        lastActiveAt: Date.now(),
       },
       auditLogs: [auditEntry, ...globalState.auditLogs],
     };
@@ -226,22 +309,31 @@ export function usePortalStore() {
     return newPartner;
   };
 
-  // Auth Action: Admin Login
+  // Auth Action: Admin Login with strict credential checking
   const adminLogin = (email: string, password?: string, totp?: string) => {
     const cleanEmail = email.trim().toLowerCase();
-    if (cleanEmail === "admin@retner.ai" || cleanEmail.includes("admin")) {
+    const cleanPass = password?.trim();
+    const cleanTotp = totp?.trim();
+
+    // Default master admin check
+    const validEmail = (process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@retner.ai").toLowerCase();
+    const validPass = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "Admin@123";
+
+    if (cleanEmail === validEmail && cleanPass === validPass) {
       globalState = {
         ...globalState,
         authSession: {
           userType: "admin",
-          adminEmail: "admin@retner.ai",
+          adminEmail: cleanEmail,
           adminRole: "Super Admin",
+          lastActiveAt: Date.now(),
         },
       };
       notify();
       return true;
     }
-    throw new Error("Invalid admin credentials. Use admin@retner.ai / Admin@123");
+
+    throw new Error("Invalid admin email or password. Please verify your credentials.");
   };
 
   // Logout
@@ -249,6 +341,7 @@ export function usePortalStore() {
     globalState = {
       ...globalState,
       authSession: { userType: null },
+      currentPartner: null,
     };
     notify();
   };
@@ -267,7 +360,7 @@ export function usePortalStore() {
 
     const auditEntry: AuditLog = {
       id: `log-${Date.now()}`,
-      actor: "Admin (SuperAdmin)",
+      actor: "Admin",
       action: "partner_approved",
       entity: "partner",
       entityId: partnerId,
@@ -276,7 +369,7 @@ export function usePortalStore() {
     };
 
     let updatedCurrent = globalState.currentPartner;
-    if (globalState.currentPartner.id === partnerId) {
+    if (globalState.currentPartner?.id === partnerId) {
       updatedCurrent = { ...globalState.currentPartner, status: "active" };
     }
 
@@ -303,11 +396,11 @@ export function usePortalStore() {
 
     const auditEntry: AuditLog = {
       id: `log-${Date.now()}`,
-      actor: "Admin (SuperAdmin)",
+      actor: "Admin",
       action: "partner_rejected",
       entity: "partner",
       entityId: partnerId,
-      details: `Rejected partner ${partner?.name}. Reason: ${reason || "Profile criteria mismatch"}`,
+      details: `Rejected partner ${partner?.name}. Reason: ${reason || "Profile mismatch"}`,
       timestamp: now,
     };
 
@@ -350,7 +443,7 @@ export function usePortalStore() {
     notify();
   };
 
-  // Action: Add new lead from Partner form
+  // Action: Add new lead from Partner form (with Self-Referral Prevention Fraud Check)
   const addLead = (newLeadData: {
     brandName: string;
     website: string;
@@ -359,8 +452,27 @@ export function usePortalStore() {
     monthlyRevenueRange: string;
     notes?: string;
   }) => {
+    if (!globalState.currentPartner) {
+      throw new Error("You must be logged in as an active partner to submit leads.");
+    }
+
+    const partner = globalState.currentPartner;
     const normalizedNewDomain = normalizeDomain(newLeadData.website);
-    
+    const cleanLeadPhone = newLeadData.contact.phone.replace(/[^0-9]/g, "");
+    const cleanLeadEmail = newLeadData.contact.email.trim().toLowerCase();
+
+    // Security Fraud Check: Prevent Self-Referral (PRD Section 15)
+    const cleanPartnerPhone = partner.phone.replace(/[^0-9]/g, "");
+    const cleanPartnerEmail = partner.email.toLowerCase();
+
+    if (cleanLeadEmail === cleanPartnerEmail || (cleanLeadPhone && cleanLeadPhone === cleanPartnerPhone)) {
+      throw new Error("Fraud Prevention: Self-referral is strictly prohibited. You cannot submit your own contact info as a referred lead.");
+    }
+
+    if (partner.website && normalizeDomain(partner.website) === normalizedNewDomain) {
+      throw new Error("Fraud Prevention: You cannot refer your own agency or company domain.");
+    }
+
     // Check duplicate or conflict
     const existingMatch = globalState.leads.find(
       (l) => normalizeDomain(l.website) === normalizedNewDomain
@@ -373,15 +485,15 @@ export function usePortalStore() {
 
     const createdLead: Lead = {
       id: newId,
-      partnerId: globalState.currentPartner.id,
-      partnerName: globalState.currentPartner.name,
-      brandName: newLeadData.brandName,
-      website: newLeadData.website,
-      shopDomain: newLeadData.shopDomain,
+      partnerId: partner.id,
+      partnerName: partner.name,
+      brandName: newLeadData.brandName.trim(),
+      website: newLeadData.website.trim(),
+      shopDomain: newLeadData.shopDomain?.trim(),
       source: "manual",
       contact: newLeadData.contact,
       monthlyRevenueRange: newLeadData.monthlyRevenueRange,
-      notes: newLeadData.notes,
+      notes: newLeadData.notes?.trim(),
       status: "new",
       conflictStatus: isConflict ? "pending_review" : "none",
       attributedAt: now,
@@ -395,9 +507,9 @@ export function usePortalStore() {
           toStatus: "new",
           note: isConflict 
             ? "Domain matches existing entry; assigned to conflict queue for admin review."
-            : "Manually registered and protected for 90 days.",
+            : "Manually registered and protected under partner code for 90 days.",
           visibleToPartner: true,
-          actor: { type: "partner", name: globalState.currentPartner.name },
+          actor: { type: "partner", name: partner.name },
           timestamp: now,
         }
       ],
@@ -407,16 +519,16 @@ export function usePortalStore() {
     
     // Update partner counter
     const updatedPartner = {
-      ...globalState.currentPartner,
+      ...partner,
       stats: {
-        ...globalState.currentPartner.stats,
-        leadsCount: globalState.currentPartner.stats.leadsCount + 1,
+        ...partner.stats,
+        leadsCount: partner.stats.leadsCount + 1,
       }
     };
 
     const auditEntry: AuditLog = {
       id: `log-${Date.now()}`,
-      actor: `Partner (${globalState.currentPartner.name})`,
+      actor: `Partner (${partner.name})`,
       action: isConflict ? "lead_submitted_conflict" : "lead_submitted",
       entity: "lead",
       entityId: newId,
@@ -501,9 +613,9 @@ export function usePortalStore() {
       return l;
     });
 
-    // Update partner stats if it's the current partner
+    // Update partner stats
     let updatedCurrentPartner = globalState.currentPartner;
-    if (lead.partnerId === globalState.currentPartner.id) {
+    if (globalState.currentPartner && lead.partnerId === globalState.currentPartner.id) {
       updatedCurrentPartner = {
         ...globalState.currentPartner,
         stats: {
@@ -584,6 +696,8 @@ export function usePortalStore() {
 
   // Action: Partner requests payout
   const requestPayout = (amountPaise: number, payoutMethodId: string, note?: string) => {
+    if (!globalState.currentPartner) throw new Error("Not logged in");
+
     if (amountPaise > globalState.currentPartner.stats.availablePaise) {
       throw new Error("Requested amount exceeds available balance");
     }
@@ -598,7 +712,7 @@ export function usePortalStore() {
 
     // Mark eligible available earnings as requested
     const updatedEarnings = globalState.earnings.map((e) => {
-      if (e.status === "available" && e.partnerId === globalState.currentPartner.id) {
+      if (e.status === "available" && e.partnerId === globalState.currentPartner?.id) {
         return { ...e, status: "requested" as const, payoutId };
       }
       return e;
@@ -632,7 +746,7 @@ export function usePortalStore() {
       action: "payout_requested",
       entity: "payout",
       entityId: payoutId,
-      details: `Requested ₹${amountPaise / 100} (Net ₹${netPayablePaise / 100}) to ${method.type === "upi" ? method.upiId : method.accountNumberMasked}`,
+      details: `Requested ₹${amountPaise / 100} (Net ₹${netPayablePaise / 100})`,
       timestamp: now,
     };
 
@@ -677,13 +791,16 @@ export function usePortalStore() {
     });
 
     // Update partner paidOutPaise
-    const updatedPartner = {
-      ...globalState.currentPartner,
-      stats: {
-        ...globalState.currentPartner.stats,
-        paidOutPaise: globalState.currentPartner.stats.paidOutPaise + payout.amountPaise,
-      }
-    };
+    let updatedCurrentPartner = globalState.currentPartner;
+    if (globalState.currentPartner && globalState.currentPartner.id === payout.partnerId) {
+      updatedCurrentPartner = {
+        ...globalState.currentPartner,
+        stats: {
+          ...globalState.currentPartner.stats,
+          paidOutPaise: globalState.currentPartner.stats.paidOutPaise + payout.amountPaise,
+        }
+      };
+    }
 
     const auditEntry: AuditLog = {
       id: `log-${Date.now()}`,
@@ -697,7 +814,7 @@ export function usePortalStore() {
 
     globalState = {
       ...globalState,
-      currentPartner: updatedPartner,
+      currentPartner: updatedCurrentPartner,
       payouts: updatedPayouts,
       earnings: updatedEarnings,
       auditLogs: [auditEntry, ...globalState.auditLogs],
@@ -707,6 +824,8 @@ export function usePortalStore() {
 
   // Action: Partner claims offer
   const claimOffer = (offerId: string, deliveryDetails: { shippingAddress?: string; phone?: string; email?: string }) => {
+    if (!globalState.currentPartner) throw new Error("Not logged in");
+
     const offer = globalState.offers.find((o) => o.id === offerId);
     if (!offer) throw new Error("Offer not found");
 
@@ -726,7 +845,7 @@ export function usePortalStore() {
       claimedAt: now,
     };
 
-    // If it's a cash bonus, directly credit to earnings
+    // If cash bonus, credit to earnings
     let newEarnings = [...globalState.earnings];
     if (offer.rewardType === "cash_bonus") {
       newEarnings = [
@@ -812,50 +931,10 @@ export function usePortalStore() {
     notify();
   };
 
-  // Action: Switch Partner (Impersonation / multi-partner test)
-  const switchPartner = (partnerId: string) => {
-    const found = globalState.partners.find((p) => p.id === partnerId);
-    if (found) {
-      globalState = { 
-        ...globalState, 
-        currentPartner: found,
-        authSession: {
-          userType: "partner",
-          partnerId: found.id,
-        }
-      };
-      notify();
-    }
-  };
-
-  // Action: Reset demo state
-  const resetDemoState = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-    globalState = {
-      authSession: {
-        userType: "partner",
-        partnerId: initialPartner.id,
-      },
-      currentPartner: initialPartner,
-      partners: initialAllPartners,
-      leads: initialLeads,
-      offers: initialOffers,
-      earnings: initialEarnings,
-      payouts: initialPayouts,
-      claims: initialRewardClaims,
-      commissionPlans: initialCommissionPlans,
-      tiers: initialTiers,
-      settings: initialSettings,
-      auditLogs: initialAuditLogs,
-    };
-    notify();
-  };
-
   return {
     ...state,
-    partnerLogin,
+    sendPartnerOtp,
+    verifyPartnerOtp,
     partnerSignup,
     adminLogin,
     logout,
@@ -869,7 +948,5 @@ export function usePortalStore() {
     markPayoutPaid,
     claimOffer,
     updateClaimStatus,
-    switchPartner,
-    resetDemoState,
   };
 }

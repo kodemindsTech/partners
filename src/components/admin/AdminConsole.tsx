@@ -56,8 +56,7 @@ export function AdminConsole({ onLogout }: AdminConsoleProps) {
     updateClaimStatus,
     approvePartner,
     rejectPartner,
-    suspendPartner,
-    resetDemoState
+    suspendPartner
   } = usePortalStore();
 
   const [activeTab, setActiveTab] = useState<
@@ -171,15 +170,6 @@ export function AdminConsole({ onLogout }: AdminConsoleProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={resetDemoState}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white text-xs font-semibold hover:bg-zinc-700 transition"
-            title="Reset Store to Default Mock Data"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>Reset Demo Data</span>
-          </button>
-
           {onLogout && (
             <button
               onClick={onLogout}

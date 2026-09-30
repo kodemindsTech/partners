@@ -25,6 +25,8 @@ export function EarningsTab() {
   const [activeLedgerFilter, setActiveLedgerFilter] = useState<string>("all");
   const [payoutModalOpen, setPayoutModalOpen] = useState(false);
 
+  if (!currentPartner) return null;
+
   const availablePaise = currentPartner.stats.availablePaise;
   const pendingPaise = currentPartner.stats.pendingPaise;
   const paidOutPaise = currentPartner.stats.paidOutPaise;

@@ -13,7 +13,8 @@ import {
   ShieldCheck, 
   Sparkles,
   MessageSquareShare,
-  Lock
+  Lock,
+  AlertCircle
 } from "lucide-react";
 import { usePortalStore } from "@/lib/store";
 import { PartnerType } from "@/lib/types";
@@ -23,13 +24,13 @@ interface PartnerAuthModalProps {
 }
 
 export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
-  const { partnerLogin, partnerSignup, partners } = usePortalStore();
+  const { sendPartnerOtp, verifyPartnerOtp, partnerSignup } = usePortalStore();
 
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [loginStep, setLoginStep] = useState<"phone" | "otp">("phone");
-  const [phoneOrEmail, setPhoneOrEmail] = useState("+91 98765 43210");
+  const [phoneOrEmail, setPhoneOrEmail] = useState("");
   const [otpCode, setOtpCode] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("849201");
+  const [simulatedOtpNotice, setSimulatedOtpNotice] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,42 +40,45 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
   const [signupEmail, setSignupEmail] = useState("");
   const [partnerType, setPartnerType] = useState<PartnerType>("marketing_agency");
   const [companyName, setCompanyName] = useState("");
-  const [city, setCity] = useState("Bengaluru");
+  const [city, setCity] = useState("");
   const [website, setWebsite] = useState("");
-  const [d2cBrandsCount, setD2cBrandsCount] = useState("5-10 brands");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Handle Send Login OTP
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phoneOrEmail) return;
+    if (!phoneOrEmail.trim()) return;
     setErrorMsg("");
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const { simulatedCode } = sendPartnerOtp(phoneOrEmail);
       setIsLoading(false);
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedOtp(code);
-      setOtpCode(code); // Pre-fill for instant frictionless demo
+      setSimulatedOtpNotice(simulatedCode);
       setLoginStep("otp");
-    }, 400);
+    } catch (err: unknown) {
+      setIsLoading(false);
+      const msg = err instanceof Error ? err.message : "Error sending OTP";
+      setErrorMsg(msg);
+    }
   };
 
   // Handle Verify Login OTP
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!otpCode.trim()) return;
     setErrorMsg("");
     setIsLoading(true);
 
     try {
-      partnerLogin(phoneOrEmail);
+      verifyPartnerOtp(phoneOrEmail, otpCode);
       setIsLoading(false);
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
       setIsLoading(false);
-      const message = err instanceof Error ? err.message : "Invalid phone or email";
-      setErrorMsg(message);
+      const msg = err instanceof Error ? err.message : "Invalid OTP";
+      setErrorMsg(msg);
     }
   };
 
@@ -82,7 +86,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!termsAccepted) {
-      setErrorMsg("Please accept the Retner Partner Terms to proceed.");
+      setErrorMsg("Please accept the Retner Partner Agreement to proceed.");
       return;
     }
     setErrorMsg("");
@@ -97,7 +101,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
         companyName: companyName || undefined,
         city,
         website: website || undefined,
-        d2cBrandsCount: 5,
+        d2cBrandsCount: 1,
       });
 
       setIsLoading(false);
@@ -107,8 +111,8 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
       }, 1800);
     } catch (err: unknown) {
       setIsLoading(false);
-      const message = err instanceof Error ? err.message : "Error creating partner account";
-      setErrorMsg(message);
+      const msg = err instanceof Error ? err.message : "Error creating account";
+      setErrorMsg(msg);
     }
   };
 
@@ -121,12 +125,12 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
             R
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-3">
-            {mode === "login" ? "Partner Portal Login" : "Join Partner Program"}
+            {mode === "login" ? "Partner Portal Login" : "Partner Registration"}
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
             {mode === "login"
-              ? "Access your leads, commission ledger & payouts"
-              : "Refer D2C brands to Retner & earn up to 20% lifetime commission"}
+              ? "Sign in with your verified WhatsApp mobile number"
+              : "Earn up to 20% lifetime commission referring D2C brands to Retner"}
           </p>
         </div>
 
@@ -138,6 +142,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
               setMode("login");
               setLoginStep("phone");
               setErrorMsg("");
+              setOtpCode("");
             }}
             className={`py-2 text-xs font-bold rounded-lg transition ${
               mode === "login"
@@ -164,8 +169,9 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
         </div>
 
         {errorMsg && (
-          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium">
-            {errorMsg}
+          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>{errorMsg}</span>
           </div>
         )}
 
@@ -183,14 +189,14 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     <input
                       type="text"
                       required
-                      placeholder="+91 98765 43210 or email"
+                      placeholder="+91 98765 43210 or your email"
                       value={phoneOrEmail}
                       onChange={(e) => setPhoneOrEmail(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
                     />
                   </div>
-                  <p className="text-[11px] text-zinc-400 mt-1">
-                    We will send a 6-digit WhatsApp OTP verification code.
+                  <p className="text-[11px] text-zinc-400 mt-1.5">
+                    We will send a 6-digit WhatsApp OTP verification code (5-min expiry).
                   </p>
                 </div>
 
@@ -202,41 +208,19 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                   <MessageSquareShare className="w-4 h-4" />
                   <span>{isLoading ? "Sending OTP..." : "Send WhatsApp OTP"}</span>
                 </button>
-
-                {/* Quick 1-Click Demo Accounts */}
-                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                  <span className="text-[10px] text-zinc-400 uppercase font-bold tracking-wider block mb-2 text-center">
-                    Demo Instant Login (1-Click)
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {partners.slice(0, 2).map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => {
-                          setPhoneOrEmail(p.phone);
-                          setLoginStep("otp");
-                          setOtpCode("849201");
-                        }}
-                        className="p-2 text-left rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 border border-zinc-200 dark:border-zinc-700 text-xs transition"
-                      >
-                        <div className="font-bold text-zinc-800 dark:text-zinc-200 truncate">{p.name}</div>
-                        <div className="text-[10px] text-zinc-500 font-mono">{p.phone}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </form>
             ) : (
               /* OTP Code Input Step */
               <form onSubmit={handleVerifyOtp} className="space-y-4 text-xs">
-                <div className="p-3 rounded-xl bg-[#9CE06F]/15 border border-[#9CE06F]/30 text-[#1F251D] dark:text-[#9CE06F] text-xs flex items-center justify-between">
-                  <div>
-                    <span className="font-bold">Simulated WhatsApp OTP:</span>
-                    <span className="font-mono font-black text-sm ml-2">{generatedOtp}</span>
+                {simulatedOtpNotice && (
+                  <div className="p-3 rounded-xl bg-[#9CE06F]/15 border border-[#9CE06F]/30 text-[#1F251D] dark:text-[#9CE06F] text-xs flex items-center justify-between">
+                    <div>
+                      <span className="font-bold">Simulated WhatsApp OTP:</span>
+                      <span className="font-mono font-black text-sm ml-2">{simulatedOtpNotice}</span>
+                    </div>
+                    <span className="text-[10px] font-semibold">5 min TTL</span>
                   </div>
-                  <span className="text-[10px] font-semibold">5 min expiry</span>
-                </div>
+                )}
 
                 <div>
                   <label className="font-bold text-zinc-700 dark:text-zinc-300 uppercase block mb-1.5">
@@ -246,7 +230,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     type="text"
                     required
                     maxLength={6}
-                    placeholder="849201"
+                    placeholder="123456"
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value)}
                     className="w-full text-center tracking-[0.5em] py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xl font-mono font-black text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
@@ -256,10 +240,13 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => setLoginStep("phone")}
+                    onClick={() => {
+                      setLoginStep("phone");
+                      setOtpCode("");
+                    }}
                     className="py-3 px-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold"
                   >
-                    Change Phone
+                    Change
                   </button>
                   <button
                     type="submit"
@@ -284,7 +271,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                   Welcome to Retner Partners!
                 </h3>
                 <p className="text-xs text-zinc-500 max-w-xs mx-auto">
-                  Your partner profile has been registered and is now listed under the Admin Review pipeline. Redirecting to your dashboard...
+                  Your partner profile is submitted and now listed under Admin Review. Entering your portal...
                 </p>
               </div>
             ) : (
@@ -296,7 +283,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Vikram Singhania"
+                    placeholder="Your Full Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
@@ -311,7 +298,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     <input
                       type="tel"
                       required
-                      placeholder="+91 98765..."
+                      placeholder="+91..."
                       value={signupPhone}
                       onChange={(e) => setSignupPhone(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
@@ -324,7 +311,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     <input
                       type="email"
                       required
-                      placeholder="vikram@agency.in"
+                      placeholder="name@company.com"
                       value={signupEmail}
                       onChange={(e) => setSignupEmail(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
@@ -344,9 +331,9 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     >
                       <option value="marketing_agency">Marketing Agency</option>
                       <option value="shopify_agency">Shopify Dev Agency</option>
-                      <option value="freelancer">Freelance Growth Consultant</option>
+                      <option value="freelancer">Freelance Consultant</option>
                       <option value="existing_customer">Existing Retner Customer</option>
-                      <option value="other">Influencer / Community</option>
+                      <option value="other">Community / Influencer</option>
                     </select>
                   </div>
                   <div>
@@ -356,7 +343,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Mumbai, Delhi"
+                      placeholder="e.g. Bengaluru, Mumbai"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
@@ -379,11 +366,11 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                   </div>
                   <div>
                     <label className="font-bold text-zinc-700 dark:text-zinc-300 uppercase block mb-1">
-                      Website or Social
+                      Website / Profile
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. agency.co"
+                      placeholder="Optional website"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
@@ -401,7 +388,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       className="mt-0.5 rounded text-[#1F251D]"
                     />
                     <span className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-snug">
-                      I accept the Retner Partner Agreement, code of conduct, and 90-day lead protection terms.
+                      I accept the Retner Partner Terms of Service and 90-day lead protection guidelines.
                     </span>
                   </label>
                 </div>
@@ -411,7 +398,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                   disabled={isLoading || !termsAccepted}
                   className="w-full py-3.5 rounded-xl bg-[#1F251D] dark:bg-[#9CE06F] text-white dark:text-[#1F251D] font-bold text-sm hover:opacity-95 transition disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg"
                 >
-                  <span>{isLoading ? "Creating Partner Account..." : "Complete Sign Up (Instant Link)"}</span>
+                  <span>{isLoading ? "Creating Account..." : "Create Partner Account"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>

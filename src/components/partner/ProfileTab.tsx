@@ -22,12 +22,15 @@ import { usePortalStore } from "@/lib/store";
 export function ProfileTab() {
   const { currentPartner, tiers, commissionPlans } = usePortalStore();
 
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  if (!currentPartner) return null;
+
   const currentTier = tiers.find((t) => t.id === currentPartner.tierId) || tiers[0];
   const linkedPlan = commissionPlans.find((p) => p.id === currentTier.linkedPlanId) || commissionPlans[0];
 
-  const [whatsappNotifs, setWhatsappNotifs] = useState(currentPartner.notificationPrefs.whatsapp);
-  const [emailNotifs, setEmailNotifs] = useState(currentPartner.notificationPrefs.email);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [whatsappNotifs, setWhatsappNotifs] = useState(currentPartner.notificationPrefs?.whatsapp ?? true);
+  const [emailNotifs, setEmailNotifs] = useState(currentPartner.notificationPrefs?.email ?? true);
 
   const faqs = [
     {

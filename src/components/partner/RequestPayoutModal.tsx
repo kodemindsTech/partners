@@ -13,19 +13,19 @@ interface RequestPayoutModalProps {
 export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps) {
   const { currentPartner, settings, requestPayout } = usePortalStore();
 
-  const availablePaise = currentPartner.stats.availablePaise;
+  const availablePaise = currentPartner?.stats.availablePaise || 0;
   const minPayoutPaise = settings.minPayoutPaise; // ₹1,000
 
   const [amountRupees, setAmountRupees] = useState<number>(availablePaise / 100);
   const [selectedMethodId, setSelectedMethodId] = useState<string>(
-    currentPartner.payoutMethods[0]?.id || ""
+    currentPartner?.payoutMethods[0]?.id || ""
   );
   const [requestNote, setRequestNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  if (!isOpen) return null;
+  if (!isOpen || !currentPartner) return null;
 
   const amountPaise = Math.round(Number(amountRupees || 0) * 100);
   const tdsPaise = Math.round(amountPaise * (settings.tdsRatePercent / 100));

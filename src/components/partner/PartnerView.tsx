@@ -9,14 +9,9 @@ import {
   User, 
   Plus, 
   Bell, 
-  Sparkles,
-  LogOut,
-  Award,
-  Share2,
-  TrendingUp,
-  ShieldCheck,
-  ChevronRight,
-  ExternalLink
+  Sparkles, 
+  LogOut, 
+  Award 
 } from "lucide-react";
 import { usePortalStore } from "@/lib/store";
 import { HomeTab } from "./HomeTab";
@@ -38,6 +33,10 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
   const [activeTab, setActiveTab] = useState<"home" | "referrals" | "offers" | "earnings" | "profile">("home");
   const [referModalOpen, setReferModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  if (!currentPartner) {
+    return null;
+  }
 
   const currentTier = tiers.find((t) => t.id === currentPartner.tierId) || tiers[0];
 
@@ -130,7 +129,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
         </div>
       </header>
 
-      {/* Main Body (True Desktop Layout: Fixed Sidebar + Expansive Full-Width Content) */}
+      {/* Main Body */}
       <div className="flex-1 flex w-full max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8 gap-8">
         {/* Desktop Sidebar Navigation */}
         <aside className="w-64 flex-shrink-0 hidden md:flex flex-col justify-between">
@@ -139,7 +138,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
             <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1F251D] to-[#2D3A29] text-[#9CE06F] flex items-center justify-center font-black text-base shadow">
-                  {currentPartner.name[0]}
+                  {currentPartner.name[0] || "P"}
                 </div>
                 <div className="min-w-0">
                   <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
@@ -178,7 +177,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
                       <Icon className="w-4 h-4" />
                       <span>{item.label}</span>
                     </div>
-                    {item.badge !== undefined && (
+                    {item.badge !== undefined && item.badge > 0 && (
                       <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? "bg-white/25 text-white" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"}`}>
                         {item.badge}
                       </span>

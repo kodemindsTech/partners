@@ -56,10 +56,10 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white dark:bg-[#1C1C1E] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#151814] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
               <Gift className="w-5 h-5" />
@@ -99,14 +99,14 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
         ) : (
           <form onSubmit={handleClaim} className="mt-5 space-y-4">
             {/* Offer preview card */}
-            <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 flex items-center gap-3">
+            <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#1A1E18] border border-zinc-200 dark:border-white/10 flex items-center gap-3">
               <img
                 src={offer.heroImage}
                 alt={offer.title}
                 className="w-16 h-16 object-cover rounded-xl border border-zinc-200 dark:border-zinc-700"
               />
               <div>
-                <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-bold mb-1">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-[#9CE06F] text-[10px] font-bold mb-1">
                   TARGET ACHIEVED
                 </span>
                 <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
@@ -131,7 +131,7 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
                     placeholder="Full street address, landmark, city, state, pin code"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
 
@@ -143,7 +143,7 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
                     placeholder="Recipient Phone Number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
               </div>
@@ -162,14 +162,14 @@ export function ClaimRewardModal({ isOpen, onClose, offer }: ClaimRewardModalPro
                     placeholder="Voucher delivery email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
               </div>
             )}
 
             {offer.rewardType === "cash_bonus" && (
-              <p className="text-xs text-zinc-500 p-3 bg-zinc-50 dark:bg-zinc-800/80 rounded-xl">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 p-3 bg-zinc-50 dark:bg-[#1A1E18] rounded-xl border border-zinc-200 dark:border-white/10">
                 This ₹{offer.rewardValuePaise / 100} cash reward will be added instantly to your withdrawable ledger balance.
               </p>
             )}

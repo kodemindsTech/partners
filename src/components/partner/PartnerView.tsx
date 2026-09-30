@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Home, 
   Users, 
@@ -11,7 +11,9 @@ import {
   Bell, 
   Sparkles, 
   LogOut, 
-  Award 
+  Award,
+  Sun,
+  Moon
 } from "lucide-react";
 import { usePortalStore } from "@/lib/store";
 import { HomeTab } from "./HomeTab";
@@ -33,6 +35,31 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
   const [activeTab, setActiveTab] = useState<"home" | "referrals" | "offers" | "earnings" | "profile">("home");
   const [referModalOpen, setReferModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    // Default to dark mode or user stored preference
+    const saved = localStorage.getItem("retner_theme");
+    const prefersDark = saved ? saved === "dark" : true;
+    setIsDarkMode(prefersDark);
+    if (prefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const nextMode = !isDarkMode;
+    setIsDarkMode(nextMode);
+    if (nextMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("retner_theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("retner_theme", "light");
+    }
+  };
 
   if (!currentPartner) {
     return null;
@@ -62,17 +89,17 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] flex flex-col">
+    <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#0B0D0A] text-[#1D1D1F] dark:text-[#F5F5F7] flex flex-col">
       {/* Toast Notification Alert */}
       {toastMessage && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-2xl bg-zinc-900/90 backdrop-blur-md text-white text-xs font-semibold shadow-xl animate-in fade-in slide-in-from-top-2 duration-200 flex items-center gap-2">
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-2xl bg-zinc-900/90 dark:bg-zinc-800/90 backdrop-blur-md text-white text-xs font-semibold shadow-xl animate-in fade-in slide-in-from-top-2 duration-200 flex items-center gap-2 border border-white/10">
           <Sparkles className="w-3.5 h-3.5 text-[#9CE06F]" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md px-6 lg:px-10 py-3.5 flex items-center justify-between border-b border-black/5 dark:border-white/10 shadow-sm">
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#121512]/90 backdrop-blur-md px-6 lg:px-10 py-3.5 flex items-center justify-between border-b border-black/5 dark:border-white/10 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-[#1F251D] dark:bg-[#9CE06F] text-[#9CE06F] dark:text-[#1F251D] flex items-center justify-center font-black text-base tracking-wider shadow-sm">
             R
@@ -92,9 +119,9 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
         {/* Right action controls */}
         <div className="flex items-center gap-3 sm:gap-4">
           {/* Available balance highlight */}
-          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs">
-            <span className="text-zinc-500 font-medium">Available:</span>
-            <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100 dark:bg-[#1A1E18] border border-zinc-200 dark:border-white/10 text-xs">
+            <span className="text-zinc-500 dark:text-zinc-400 font-medium">Available:</span>
+            <span className="font-bold text-emerald-600 dark:text-[#9CE06F] font-mono">
               {formatINR(currentPartner.stats.availablePaise)}
             </span>
           </div>
@@ -107,10 +134,19 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
             <span>Refer Brand</span>
           </button>
 
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[#1A1E18] border border-transparent dark:border-white/10 transition"
+            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-zinc-600" />}
+          </button>
+
           {/* In-app notification bell */}
           <button
             onClick={() => showToast("All system alerts are synced with your WhatsApp & Email")}
-            className="relative p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            className="relative p-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[#1A1E18] transition"
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
@@ -135,7 +171,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
         <aside className="w-64 flex-shrink-0 hidden md:flex flex-col justify-between">
           <div className="space-y-6">
             {/* Partner Profile Snapshot Card */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-sm">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#151814] border border-zinc-200 dark:border-white/10 space-y-3 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1F251D] to-[#2D3A29] text-[#9CE06F] flex items-center justify-center font-black text-base shadow">
                   {currentPartner.name[0] || "P"}
@@ -144,14 +180,14 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
                   <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
                     {currentPartner.name}
                   </div>
-                  <div className="text-xs text-zinc-500 truncate">
+                  <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
                     {currentPartner.companyName || currentPartner.type.replace("_", " ")}
                   </div>
                 </div>
               </div>
 
-              <div className="pt-2.5 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
-                <span className="text-zinc-500 font-medium">Partner Tier:</span>
+              <div className="pt-2.5 border-t border-zinc-100 dark:border-white/10 flex items-center justify-between text-xs">
+                <span className="text-zinc-500 dark:text-zinc-400 font-medium">Partner Tier:</span>
                 <span className="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <Award className="w-3.5 h-3.5" /> {currentTier.name}
                 </span>
@@ -170,7 +206,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition ${
                       isActive
                         ? "bg-[#1F251D] text-white dark:bg-[#9CE06F] dark:text-[#1F251D] shadow-sm"
-                        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80"
+                        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/60 dark:hover:bg-[#1A1E18]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -178,7 +214,7 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
                       <span>{item.label}</span>
                     </div>
                     {item.badge !== undefined && item.badge > 0 && (
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? "bg-white/25 text-white" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"}`}>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? "bg-white/25 text-white" : "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"}`}>
                         {item.badge}
                       </span>
                     )}
@@ -189,14 +225,14 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
           </div>
 
           {/* Bottom Referral Link Box */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1F251D] to-[#2D382B] text-white space-y-2.5 shadow-md">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#161A15] to-[#111410] border border-zinc-200 dark:border-white/10 text-white space-y-2.5 shadow-md">
             <span className="text-[10px] uppercase font-mono text-[#9CE06F] font-bold block tracking-wider">
               Referral Slug
             </span>
-            <div className="font-mono font-black text-sm tracking-wider bg-black/30 px-3 py-1.5 rounded-lg">
+            <div className="font-mono font-black text-sm tracking-wider bg-black/40 text-zinc-100 px-3 py-1.5 rounded-lg border border-white/5">
               partners.retner.ai/r/{currentPartner.referralCode}
             </div>
-            <p className="text-[11px] text-zinc-300 leading-snug">
+            <p className="text-[11px] text-zinc-400 leading-snug">
               Share directly on WhatsApp to attribute new brand signups.
             </p>
           </div>

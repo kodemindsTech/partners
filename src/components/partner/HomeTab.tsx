@@ -132,7 +132,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
         </div>
 
         {/* Available to Withdraw */}
-        <div className="apple-card p-5 bg-gradient-to-br from-white to-[#F3FDDA] dark:from-zinc-900 dark:to-[#1F251D]/60 border-[#9CE06F]/50 flex flex-col justify-between shadow-sm">
+        <div className="apple-card p-5 bg-gradient-to-br from-white to-[#F3FDDA] dark:from-[#1A2118] dark:to-[#151D14] border-[#9CE06F]/40 dark:border-[#9CE06F]/30 flex flex-col justify-between shadow-sm">
           <div className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
             Available to Withdraw
           </div>
@@ -156,7 +156,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
           <div className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-2 font-mono">
             {formatINR(currentPartner.stats.pendingPaise)}
           </div>
-          <div className="text-xs text-zinc-400 flex items-center gap-1 mt-2">
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1 mt-2">
             <Clock className="w-3.5 h-3.5" />
             <span>30-day refund protection lock</span>
           </div>
@@ -170,7 +170,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
           <div className="text-2xl sm:text-3xl font-black text-zinc-800 dark:text-zinc-200 mt-2 font-mono">
             {formatINR(currentPartner.stats.paidOutPaise)}
           </div>
-          <div className="text-xs text-zinc-400 mt-2">
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
             Direct NEFT / UPI settlement
           </div>
         </div>
@@ -181,7 +181,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
         {/* Left Column (8 Columns: Referral Card & Live Milestone Offers) */}
         <div className="lg:col-span-8 space-y-6">
           {/* Share Your Link Card */}
-          <div className="apple-card p-6 bg-gradient-to-b from-white to-zinc-50 dark:from-[#1C1C1E] dark:to-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-4">
+          <div className="apple-card p-6 bg-gradient-to-b from-white to-zinc-50 dark:from-[#161A15] dark:to-[#121511] border border-zinc-200/80 dark:border-white/10 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#9CE06F]/20 text-[#1F251D] dark:text-[#9CE06F] flex items-center justify-center font-bold text-base shadow-sm">
@@ -191,12 +191,12 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                   <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                     Your Unique Referral Link
                   </h3>
-                  <p className="text-xs text-zinc-500">60-day cookie attribution window · Instant demo booking attribution</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">60-day cookie attribution window · Instant demo booking attribution</p>
                 </div>
               </div>
               <button
                 onClick={() => setQrOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 transition text-xs font-semibold"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition text-xs font-semibold"
                 title="Show QR Code"
               >
                 <QrCode className="w-4 h-4" />
@@ -205,7 +205,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
             </div>
 
             {/* Link Bar */}
-            <div className="flex items-center justify-between p-3 bg-white dark:bg-zinc-800/90 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-inner">
+            <div className="flex items-center justify-between p-3 bg-white dark:bg-[#121512] rounded-2xl border border-zinc-200 dark:border-white/10 shadow-inner">
               <span className="font-mono text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 truncate pr-3 font-semibold">
                 {fullReferralUrl}
               </span>
@@ -230,7 +230,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
 
               <button
                 onClick={onOpenReferModal}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold text-xs sm:text-sm hover:opacity-90 transition active:scale-[0.98]"
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-bold text-xs sm:text-sm hover:opacity-90 transition active:scale-[0.98]"
               >
                 <span>+ Register Brand Manually (90d Lock)</span>
               </button>
@@ -263,16 +263,16 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                   <div
                     key={offer.id}
                     onClick={() => onNavigateToTab("offers")}
-                    className="apple-card overflow-hidden cursor-pointer group hover:scale-[1.01] transition-transform flex flex-col justify-between"
+                    className="apple-card overflow-hidden cursor-pointer group hover:scale-[1.01] transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="relative h-36 w-full overflow-hidden bg-zinc-100">
+                      <div className="relative h-36 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
                         <img
                           src={offer.heroImage}
                           alt={offer.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[#D3F37F] text-[10px] font-bold tracking-wider">
+                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[#D3F37F] text-[10px] font-bold tracking-wider">
                           {offer.badgeText}
                         </div>
                         {isUnlocked && (
@@ -286,7 +286,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                         <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1">
                           {offer.title}
                         </h4>
-                        <p className="text-xs text-zinc-500 line-clamp-2">
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
                           {offer.subtitle}
                         </p>
                       </div>
@@ -294,9 +294,9 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
 
                     <div className="p-4 pt-0">
                       <div className="space-y-1">
-                        <div className="flex justify-between text-[11px] text-zinc-500 font-semibold">
+                        <div className="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400 font-semibold">
                           <span>Target Progress</span>
-                          <span className="font-mono">
+                          <span className="font-mono text-zinc-700 dark:text-zinc-300">
                             {offer.userProgress || 0} of {offer.targetCount}
                           </span>
                         </div>
@@ -325,7 +325,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                 <span className="font-bold text-zinc-800 dark:text-zinc-200">
                   Tier Upgrade Milestone
                 </span>
-                <span className="text-zinc-500 font-mono font-semibold">
+                <span className="text-zinc-500 dark:text-zinc-400 font-mono font-semibold">
                   {currentPartner.stats.paidCount} / {nextTier.thresholdValue} referrals
                 </span>
               </div>
@@ -339,12 +339,12 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                 />
               </div>
 
-              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-700 dark:text-zinc-300">
+              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-white/10 text-xs text-zinc-700 dark:text-zinc-300">
                 <div className="flex items-center gap-1.5 font-bold text-zinc-900 dark:text-zinc-100 mb-1">
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   <span>Next: {nextTier.name} (20% Lifetime)</span>
                 </div>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                   {Math.max(0, nextTier.thresholdValue - currentPartner.stats.paidCount)} more paid referral unlocks VIP support and exclusive hardware gifting.
                 </p>
               </div>
@@ -359,7 +359,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
 
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {recentActivities.length === 0 ? (
-                <p className="text-xs text-zinc-400 py-3 text-center">No recent activity yet.</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 py-3 text-center">No recent activity yet.</p>
               ) : (
                 recentActivities.map((act) => (
                   <div key={act.id} className="py-2.5 flex items-center justify-between first:pt-0 last:pb-0">
@@ -369,7 +369,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
                         <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate">
                           {act.title}
                         </div>
-                        <div className="text-[10px] text-zinc-400">
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
                           {formatTimeAgo(act.time)}
                         </div>
                       </div>
@@ -386,14 +386,14 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
           </div>
 
           {/* Quick Marketing Kit Card */}
-          <div className="apple-card p-5 space-y-3 bg-gradient-to-br from-white to-zinc-50 dark:from-zinc-900 dark:to-zinc-800">
+          <div className="apple-card p-5 space-y-3 bg-gradient-to-br from-white to-zinc-50 dark:from-[#161A15] dark:to-[#121511]">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
                 Partner Collateral
               </span>
               <span className="text-[10px] text-zinc-400 font-mono">2026 Pitch Kit</span>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Download approved D2C decks, WhatsApp ROI case studies, and brand creatives.
             </p>
             <button

@@ -118,7 +118,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800">
+      <div className="w-full max-w-md bg-white dark:bg-[#151814] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10">
         {/* Brand Header */}
         <div className="text-center mb-6">
           <div className="w-12 h-12 rounded-2xl bg-[#1F251D] dark:bg-[#9CE06F] text-[#9CE06F] dark:text-[#1F251D] flex items-center justify-center font-black text-xl mx-auto shadow-md">
@@ -135,7 +135,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
         </div>
 
         {/* Tab Switcher: Login vs Sign Up */}
-        <div className="grid grid-cols-2 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 mb-5">
+        <div className="grid grid-cols-2 p-1 rounded-xl bg-zinc-100 dark:bg-[#1A1E18] mb-5 border border-transparent dark:border-white/5">
           <button
             type="button"
             onClick={() => {
@@ -146,8 +146,8 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
             }}
             className={`py-2 text-xs font-bold rounded-lg transition ${
               mode === "login"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-800"
+                ? "bg-white dark:bg-[#151814] text-zinc-900 dark:text-zinc-100 shadow-sm border border-black/5 dark:border-white/10"
+                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
             }`}
           >
             Partner Log In
@@ -160,8 +160,8 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
             }}
             className={`py-2 text-xs font-bold rounded-lg transition ${
               mode === "signup"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-800"
+                ? "bg-white dark:bg-[#151814] text-zinc-900 dark:text-zinc-100 shadow-sm border border-black/5 dark:border-white/10"
+                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
             }`}
           >
             Sign Up as Partner
@@ -169,7 +169,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
         </div>
 
         {errorMsg && (
-          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium flex items-start gap-2">
+          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium flex items-start gap-2 border border-red-200 dark:border-red-900/50">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
@@ -192,10 +192,10 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="+91 98765 43210 or your email"
                       value={phoneOrEmail}
                       onChange={(e) => setPhoneOrEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm font-semibold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
                     />
                   </div>
-                  <p className="text-[11px] text-zinc-400 mt-1.5">
+                  <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-1.5">
                     We will send a 6-digit WhatsApp OTP verification code (5-min expiry).
                   </p>
                 </div>
@@ -233,7 +233,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     placeholder="123456"
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value)}
-                    className="w-full text-center tracking-[0.5em] py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xl font-mono font-black text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
+                    className="w-full text-center tracking-[0.5em] py-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#1A1E18] text-xl font-mono font-black text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
                   />
                 </div>
 
@@ -244,7 +244,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       setLoginStep("phone");
                       setOtpCode("");
                     }}
-                    className="py-3 px-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold"
+                    className="py-3 px-4 rounded-xl bg-zinc-100 dark:bg-[#1A1E18] text-zinc-700 dark:text-zinc-300 border border-transparent dark:border-white/10 font-bold"
                   >
                     Change
                   </button>
@@ -270,7 +270,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
                   Welcome to Retner Partners!
                 </h3>
-                <p className="text-xs text-zinc-500 max-w-xs mx-auto">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xs mx-auto">
                   Your partner profile is submitted and now listed under Admin Review. Entering your portal...
                 </p>
               </div>
@@ -286,7 +286,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     placeholder="Your Full Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
 
@@ -301,7 +301,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="+91..."
                       value={signupPhone}
                       onChange={(e) => setSignupPhone(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                     />
                   </div>
                   <div>
@@ -314,7 +314,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="name@company.com"
                       value={signupEmail}
                       onChange={(e) => setSignupEmail(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                     />
                   </div>
                 </div>
@@ -327,7 +327,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                     <select
                       value={partnerType}
                       onChange={(e) => setPartnerType(e.target.value as PartnerType)}
-                      className="w-full px-2.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-2.5 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
                     >
                       <option value="marketing_agency">Marketing Agency</option>
                       <option value="shopify_agency">Shopify Dev Agency</option>
@@ -346,7 +346,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="e.g. Bengaluru, Mumbai"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                     />
                   </div>
                 </div>
@@ -361,7 +361,7 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="Optional"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                     />
                   </div>
                   <div>
@@ -373,19 +373,19 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
                       placeholder="Optional website"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F]"
+                      className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#9CE06F]"
                     />
                   </div>
                 </div>
 
                 {/* Terms Agreement Checkbox */}
-                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-[#1A1E18] border border-zinc-200 dark:border-white/10">
                   <label className="flex items-start gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={termsAccepted}
                       onChange={(e) => setTermsAccepted(e.target.checked)}
-                      className="mt-0.5 rounded text-[#1F251D]"
+                      className="mt-0.5 rounded accent-[#9CE06F] text-[#1F251D]"
                     />
                     <span className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-snug">
                       I accept the Retner Partner Terms of Service and 90-day lead protection guidelines.

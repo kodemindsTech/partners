@@ -60,10 +60,10 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white dark:bg-[#1C1C1E] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#151814] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#9CE06F]/20 text-[#1F251D] dark:text-[#9CE06F] flex items-center justify-center">
               <Wallet className="w-5 h-5" />
@@ -105,10 +105,10 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
             )}
 
             {/* Available Balance Box */}
-            <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-[#1A1E18] border border-zinc-200 dark:border-white/10 flex items-center justify-between">
               <div>
                 <span className="text-xs text-zinc-500 dark:text-zinc-400">Available to Withdraw</span>
-                <div className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">
+                <div className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mt-0.5 font-mono">
                   {formatINR(availablePaise)}
                 </div>
               </div>
@@ -134,10 +134,10 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                   max={availablePaise / 100}
                   value={amountRupees}
                   onChange={(e) => setAmountRupees(Number(e.target.value))}
-                  className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-base font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                  className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#1A1E18] text-base font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                 />
               </div>
-              <span className="text-[11px] text-zinc-500 mt-1 block">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 block">
                 Minimum payout: {formatINR(minPayoutPaise)}
               </span>
             </div>
@@ -153,8 +153,8 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                     key={pm.id}
                     className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition ${
                       selectedMethodId === pm.id
-                        ? "border-[#1F251D] dark:border-[#9CE06F] bg-zinc-50 dark:bg-zinc-800"
-                        : "border-zinc-200 dark:border-zinc-700"
+                        ? "border-[#1F251D] dark:border-[#9CE06F] bg-zinc-50 dark:bg-[#1A2016]"
+                        : "border-zinc-200 dark:border-white/10"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                         value={pm.id}
                         checked={selectedMethodId === pm.id}
                         onChange={() => setSelectedMethodId(pm.id)}
-                        className="text-[#1F251D] focus:ring-[#9CE06F]"
+                        className="accent-[#9CE06F] text-[#1F251D] focus:ring-[#9CE06F]"
                       />
                       <div>
                         <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
@@ -176,7 +176,7 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                       </div>
                     </div>
                     {pm.verified && (
-                      <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                      <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-[#9CE06F] font-medium">
                         <ShieldCheck className="w-3.5 h-3.5" /> Verified
                       </span>
                     )}
@@ -192,12 +192,12 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                 placeholder="Optional note to Finance team"
                 value={requestNote}
                 onChange={(e) => setRequestNote(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
               />
             </div>
 
             {/* Tax and Summary Card */}
-            <div className="p-3.5 rounded-xl bg-zinc-100 dark:bg-zinc-800/60 space-y-1.5 text-xs">
+            <div className="p-3.5 rounded-xl bg-zinc-100 dark:bg-[#1A1E18] space-y-1.5 text-xs border border-transparent dark:border-white/5">
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                 <span>Gross Amount:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -210,9 +210,9 @@ export function RequestPayoutModal({ isOpen, onClose }: RequestPayoutModalProps)
                   - {formatINRWithDecimals(tdsPaise)}
                 </span>
               </div>
-              <div className="border-t border-zinc-200 dark:border-zinc-700 pt-1.5 flex justify-between font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              <div className="border-t border-zinc-200 dark:border-white/10 pt-1.5 flex justify-between font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 <span>Net Payable to Account:</span>
-                <span className="text-emerald-600 dark:text-emerald-400">
+                <span className="text-emerald-600 dark:text-[#9CE06F]">
                   {formatINRWithDecimals(netPayablePaise)}
                 </span>
               </div>

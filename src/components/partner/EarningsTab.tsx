@@ -68,14 +68,14 @@ export function EarningsTab() {
       {/* Balance Cards Summary (Full Desktop Grid) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Available */}
-        <div className="apple-card p-5 bg-gradient-to-br from-white to-[#F3FDDA] dark:from-zinc-900 dark:to-[#1F251D]/50 border-[#9CE06F]/50 flex flex-col justify-between shadow-sm">
+        <div className="apple-card p-5 bg-gradient-to-br from-white to-[#F3FDDA] dark:from-[#1A2118] dark:to-[#151D14] border-[#9CE06F]/40 dark:border-[#9CE06F]/30 flex flex-col justify-between shadow-sm">
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
             Available to Withdraw
           </span>
           <div className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-zinc-100 mt-2 font-mono">
             {formatINR(availablePaise)}
           </div>
-          <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-2">
+          <span className="text-xs text-emerald-600 dark:text-[#9CE06F] font-bold mt-2">
             Instant withdrawal enabled
           </span>
         </div>
@@ -88,7 +88,7 @@ export function EarningsTab() {
           <div className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-2 font-mono">
             {formatINR(pendingPaise)}
           </div>
-          <span className="text-xs text-zinc-400 mt-2">
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
             30-day refund protection
           </span>
         </div>
@@ -101,7 +101,7 @@ export function EarningsTab() {
           <div className="text-2xl sm:text-3xl font-black text-zinc-800 dark:text-zinc-200 mt-2 font-mono">
             {formatINR(paidOutPaise)}
           </div>
-          <span className="text-xs text-zinc-400 mt-2">
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
             Settled to verified bank account
           </span>
         </div>
@@ -114,7 +114,7 @@ export function EarningsTab() {
           <div className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-zinc-100 mt-2 font-mono">
             {formatINR(currentPartner.stats.totalEarnedPaise)}
           </div>
-          <span className="text-xs text-zinc-400 mt-2">
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
             Gross partner earnings
           </span>
         </div>
@@ -139,7 +139,7 @@ export function EarningsTab() {
                   className={`px-3 py-1.5 rounded-xl capitalize font-bold transition ${
                     activeLedgerFilter === f
                       ? "bg-[#1F251D] text-white dark:bg-[#9CE06F] dark:text-[#1F251D]"
-                      : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50"
+                      : "bg-white dark:bg-[#151814] text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-white/10 hover:bg-zinc-50 dark:hover:bg-[#1B1F1A]"
                   }`}
                 >
                   {f}
@@ -148,11 +148,11 @@ export function EarningsTab() {
             </div>
           </div>
 
-          <div className="divide-y divide-zinc-100 dark:divide-zinc-800 apple-card overflow-hidden">
+          <div className="divide-y divide-zinc-100 dark:divide-white/5 apple-card overflow-hidden">
             {filteredEarnings.map((earn) => {
               const isReversal = earn.status === "reversed" || earn.type === "reversal";
               return (
-                <div key={earn.id} className="p-4 sm:p-5 flex items-center justify-between hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40 transition">
+                <div key={earn.id} className="p-4 sm:p-5 flex items-center justify-between hover:bg-zinc-50/60 dark:hover:bg-[#1A1E18]/50 transition">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2.5">
                       <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
@@ -171,7 +171,7 @@ export function EarningsTab() {
                       </span>
                     </div>
 
-                    <div className="text-xs text-zinc-500 flex items-center gap-2">
+                    <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
                       <span>{formatDate(earn.createdAt)}</span>
                       {earn.leadBrandName && (
                         <>
@@ -188,13 +188,13 @@ export function EarningsTab() {
                     <div
                       className={`text-base font-black font-mono ${
                         isReversal
-                          ? "text-rose-600"
+                          ? "text-rose-600 dark:text-rose-400"
                           : "text-zinc-900 dark:text-zinc-100"
                       }`}
                     >
                       {isReversal ? "-" : "+"}{formatINR(earn.netAmountPaise)}
                     </div>
-                    <span className="text-[10px] text-zinc-400 block">
+                    <span className="text-[10px] text-zinc-400 dark:text-zinc-500 block">
                       Net credited
                     </span>
                   </div>

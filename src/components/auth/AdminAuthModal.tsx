@@ -37,10 +37,10 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800">
+      <div className="w-full max-w-md bg-white dark:bg-[#151814] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10">
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-900 text-[#9CE06F] flex items-center justify-center font-black text-xl mx-auto shadow-md">
-            <Shield className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl bg-zinc-900 dark:bg-[#9CE06F]/10 text-[#9CE06F] flex items-center justify-center font-black text-xl mx-auto shadow-md border border-zinc-800 dark:border-[#9CE06F]/20">
+            <Shield className="w-6 h-6 text-[#9CE06F]" />
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-3">
             Admin Authentication
@@ -51,7 +51,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
         </div>
 
         {errorMsg && (
-          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium flex items-start gap-2">
+          <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs font-medium flex items-start gap-2 border border-red-200 dark:border-red-900/50">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
@@ -70,7 +70,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
                 placeholder="admin@retner.ai"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm font-semibold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm font-semibold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
               />
             </div>
           </div>
@@ -104,7 +104,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
                 placeholder="6-digit TOTP code"
                 value={totp}
                 onChange={(e) => setTotp(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
             <button
               type="button"
               onClick={onCancel}
-              className="w-full py-2.5 text-xs text-zinc-500 hover:text-zinc-800 font-semibold text-center block"
+              className="w-full py-2.5 text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 font-semibold text-center block"
             >
               Back to Partner Portal
             </button>

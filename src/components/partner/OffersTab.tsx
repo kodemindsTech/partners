@@ -78,17 +78,17 @@ export function OffersTab() {
               >
                 <div>
                   {/* Hero Banner with Badge */}
-                  <div className="relative h-48 w-full bg-zinc-100 overflow-hidden">
+                  <div className="relative h-48 w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                     <img
                       src={offer.heroImage}
                       alt={offer.title}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                     
                     {/* Top Badges */}
                     <div className="absolute top-3 left-3 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-[#1F251D]/90 backdrop-blur-md text-[#D3F37F] text-xs font-bold tracking-wider">
+                      <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#D3F37F] text-xs font-bold tracking-wider">
                         {offer.badgeText}
                       </span>
                     </div>
@@ -110,7 +110,7 @@ export function OffersTab() {
                     </p>
 
                     {/* Progress Box */}
-                    <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+                    <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-white/10">
                       <div className="flex items-center justify-between text-xs font-bold">
                         <span className="text-zinc-600 dark:text-zinc-400">
                           Milestone Progress:
@@ -120,20 +120,20 @@ export function OffersTab() {
                         </span>
                       </div>
 
-                      <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-2.5 rounded-full overflow-hidden mt-2">
+                      <div className="w-full bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden mt-2">
                         <div
                           className="bg-gradient-to-r from-[#9CE06F] to-[#D3F37F] h-full rounded-full transition-all duration-300"
                           style={{ width: `${pct}%` }}
                         />
                       </div>
 
-                      <div className="flex items-center justify-between text-[11px] text-zinc-500 mt-2">
+                      <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 mt-2">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-zinc-400" />
                           <span>Ends {formatDate(offer.endAt)}</span>
                         </span>
                         {isUnlocked ? (
-                          <span className="text-emerald-600 font-bold flex items-center gap-1">
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5" /> Target Achieved!
                           </span>
                         ) : (

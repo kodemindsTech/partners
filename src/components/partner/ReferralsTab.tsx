@@ -99,7 +99,7 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
             placeholder="Search by brand name, website domain, or founder contact..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F] shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#151814] text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F] shadow-sm"
           />
         </div>
 
@@ -111,8 +111,8 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
               onClick={() => setSelectedStatus(chip.value)}
               className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${
                 selectedStatus === chip.value
-                  ? "bg-[#1F251D] text-white dark:bg-white dark:text-zinc-900 shadow-sm"
-                  : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50"
+                  ? "bg-[#1F251D] text-white dark:bg-[#9CE06F] dark:text-[#1F251D] shadow-sm"
+                  : "bg-white dark:bg-[#151814] text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-white/10 hover:bg-zinc-50 dark:hover:bg-[#1B1F1A]"
               }`}
             >
               <span>{chip.label}</span>
@@ -144,7 +144,7 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-50 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700 text-zinc-500 font-bold uppercase tracking-wider">
+              <thead className="bg-zinc-50 dark:bg-[#1A1E18] border-b border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider">
                 <tr>
                   <th className="p-4">Brand & Store</th>
                   <th className="p-4">Source</th>
@@ -154,18 +154,18 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
                   <th className="p-4 text-right">Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+              <tbody className="divide-y divide-zinc-100 dark:divide-white/5">
                 {filteredLeads.map((lead) => (
                   <tr
                     key={lead.id}
                     onClick={() => setSelectedLead(lead)}
-                    className="hover:bg-zinc-50 dark:hover:bg-zinc-800/60 cursor-pointer transition"
+                    className="hover:bg-zinc-50 dark:hover:bg-[#1A1E18]/60 cursor-pointer transition"
                   >
                     <td className="p-4">
                       <div className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                         {lead.brandName}
                       </div>
-                      <div className="text-xs text-zinc-500 flex items-center gap-2 mt-0.5">
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-2 mt-0.5">
                         <span>{lead.website}</span>
                         <span>•</span>
                         <span>{lead.monthlyRevenueRange}</span>
@@ -173,7 +173,7 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
                     </td>
 
                     <td className="p-4">
-                      <span className="font-mono text-[10px] uppercase font-bold px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                      <span className="font-mono text-[10px] uppercase font-bold px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
                         {lead.source}
                       </span>
                     </td>
@@ -186,21 +186,21 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
 
                     <td className="p-4 text-zinc-600 dark:text-zinc-400">
                       <div className="flex items-center gap-1 font-medium">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>Until {formatDate(lead.protectionExpiresAt)}</span>
                       </div>
-                      <span className="text-[10px] text-zinc-400">
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         Submitted {formatTimeAgo(lead.attributedAt)}
                       </span>
                     </td>
 
                     <td className="p-4">
                       {lead.commissionEarnedPaise > 0 ? (
-                        <div className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
+                        <div className="font-bold text-emerald-600 dark:text-[#9CE06F] font-mono text-sm">
                           {formatINR(lead.commissionEarnedPaise)}
                         </div>
                       ) : (
-                        <span className="text-zinc-400 text-xs">
+                        <span className="text-zinc-400 dark:text-zinc-500 text-xs">
                           Pending Conversion
                         </span>
                       )}
@@ -212,7 +212,7 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
                           e.stopPropagation();
                           setSelectedLead(lead);
                         }}
-                        className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-700 dark:text-zinc-300 inline-flex items-center gap-1 transition"
+                        className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-700 dark:text-zinc-200 inline-flex items-center gap-1 transition"
                       >
                         <span>View Timeline</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -228,10 +228,10 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
 
       {/* Lead Detail Modal / Slide-over Drawer */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-xl bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800 max-h-[90vh] overflow-y-auto hide-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-xl bg-white dark:bg-[#151814] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4">
+            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/10 pb-4">
               <div>
                 <div className="flex items-center gap-2.5">
                   <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
@@ -260,30 +260,30 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
             </div>
 
             {/* Attribution & Protection Card */}
-            <div className="mt-5 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-xs space-y-2.5">
+            <div className="mt-5 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-white/10 text-xs space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Attribution Source:</span>
+                <span className="text-zinc-500 dark:text-zinc-400">Attribution Source:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200 uppercase font-mono">
                   {selectedLead.source} ({selectedLead.source === "link" ? "Unique Partner Link" : "Direct Manual Submission"})
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Submitted Timestamp:</span>
+                <span className="text-zinc-500 dark:text-zinc-400">Submitted Timestamp:</span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                   {formatDate(selectedLead.attributedAt)}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Protection Active Until:</span>
+                <span className="text-zinc-500 dark:text-zinc-400">Protection Active Until:</span>
                 <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                   <ShieldCheck className="w-4 h-4" />
                   {formatDate(selectedLead.protectionExpiresAt)}
                 </span>
               </div>
               {selectedLead.commissionEarnedPaise > 0 && (
-                <div className="flex items-center justify-between pt-2 border-t border-zinc-200 dark:border-zinc-700">
-                  <span className="text-zinc-500">Total Commission Credited:</span>
-                  <span className="font-black text-base text-emerald-600 dark:text-emerald-400 font-mono">
+                <div className="flex items-center justify-between pt-2 border-t border-zinc-200 dark:border-white/10">
+                  <span className="text-zinc-500 dark:text-zinc-400">Total Commission Credited:</span>
+                  <span className="font-black text-base text-emerald-600 dark:text-[#9CE06F] font-mono">
                     {formatINR(selectedLead.commissionEarnedPaise)}
                   </span>
                 </div>
@@ -292,10 +292,10 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
 
             {/* Contact Person Details */}
             <div className="mt-5 space-y-2">
-              <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                 Founder / Decision Maker Details
               </h4>
-              <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="space-y-0.5">
                   <span className="text-zinc-400 text-[10px] block">NAME</span>
                   <span className="font-bold text-zinc-800 dark:text-zinc-200">{selectedLead.contact.name}</span>
@@ -313,19 +313,19 @@ export function ReferralsTab({ onOpenReferModal }: ReferralsTabProps) {
 
             {/* Status Progression Timeline */}
             <div className="mt-6 space-y-3">
-              <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                 Attribution & Conversion Timeline
               </h4>
 
               <div className="space-y-4 relative pl-5 border-l-2 border-zinc-200 dark:border-zinc-700 ml-2">
                 {selectedLead.events.filter((e) => e.visibleToPartner).length === 0 ? (
-                  <p className="text-xs text-zinc-400">Attributed & awaiting sales touchpoint</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500">Attributed & awaiting sales touchpoint</p>
                 ) : (
                   selectedLead.events
                     .filter((e) => e.visibleToPartner)
                     .map((ev) => (
                       <div key={ev.id} className="relative">
-                        <div className="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-[#9CE06F] ring-4 ring-white dark:ring-[#1C1C1E]" />
+                        <div className="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-[#9CE06F] ring-4 ring-white dark:ring-[#151814]" />
                         <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                           <span className="uppercase">{ev.toStatus.replace("_", " ")}</span>
                           <span className="text-[11px] text-zinc-400 font-normal">

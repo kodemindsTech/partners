@@ -49,8 +49,8 @@ export function ShareQRModal({ isOpen, onClose, referralCode, partnerName }: Sha
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-sm bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-sm bg-white dark:bg-[#151814] rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 text-center">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
@@ -79,7 +79,7 @@ export function ShareQRModal({ isOpen, onClose, referralCode, partnerName }: Sha
               className={`px-2.5 py-1 rounded-lg capitalize font-medium transition ${
                 campaign === tag
                   ? "bg-[#1F251D] text-white dark:bg-[#9CE06F] dark:text-[#1F251D]"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200"
+                  : "bg-zinc-100 dark:bg-[#1A1E18] text-zinc-600 dark:text-zinc-400 border border-transparent dark:border-white/10 hover:bg-zinc-200 dark:hover:bg-zinc-800"
               }`}
             >
               {tag}
@@ -99,15 +99,15 @@ export function ShareQRModal({ isOpen, onClose, referralCode, partnerName }: Sha
         </div>
 
         {/* Link Pill */}
-        <div className="mt-4 flex items-center justify-between p-2.5 bg-zinc-50 dark:bg-zinc-800/80 rounded-xl border border-zinc-200 dark:border-zinc-700 text-left">
+        <div className="mt-4 flex items-center justify-between p-2.5 bg-zinc-50 dark:bg-[#1A1E18] rounded-xl border border-zinc-200 dark:border-white/10 text-left">
           <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300 truncate max-w-[200px]">
             {fullUrl}
           </span>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition"
+            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-[#9CE06F]" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? "Copied" : "Copy"}</span>
           </button>
         </div>
@@ -123,7 +123,7 @@ export function ShareQRModal({ isOpen, onClose, referralCode, partnerName }: Sha
           </button>
           <button
             onClick={() => window.open(fullUrl, "_blank")}
-            className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-medium text-xs hover:opacity-90 transition active:scale-95"
+            className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-medium text-xs hover:opacity-90 transition active:scale-95"
           >
             <ExternalLink className="w-4 h-4" />
             <span>Test Redirect</span>

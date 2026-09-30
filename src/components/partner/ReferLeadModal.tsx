@@ -85,10 +85,10 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white dark:bg-[#1C1C1E] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#151814] rounded-t-[28px] sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 max-h-[90vh] overflow-y-auto hide-scrollbar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#9CE06F]/20 text-[#1F251D] dark:text-[#9CE06F] flex items-center justify-center font-bold text-lg">
               +
@@ -140,7 +140,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                     placeholder="Brand Name (e.g. NutriPulse)"
                     value={brandName}
                     onChange={(e) => setBrandName(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
                 <div className="relative">
@@ -151,7 +151,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                     placeholder="Website (e.g. brand.in)"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
               </div>
@@ -162,7 +162,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                   placeholder="Shopify Store Domain (optional, e.g. brand.myshopify.com)"
                   value={shopDomain}
                   onChange={(e) => setShopDomain(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                  className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                 />
               </div>
             </div>
@@ -180,7 +180,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                   placeholder="Contact Person Full Name"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                 />
               </div>
 
@@ -193,7 +193,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                     placeholder="Mobile (+91 98765...)"
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
                 <div className="relative">
@@ -204,7 +204,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                     placeholder="Business Email"
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                   />
                 </div>
               </div>
@@ -218,7 +218,7 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
               <select
                 value={monthlyRevenueRange}
                 onChange={(e) => setMonthlyRevenueRange(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                className="w-full px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
               >
                 <option value="Under ₹10L">Under ₹10 Lakhs / month</option>
                 <option value="₹10L – ₹25L">₹10L – ₹25 Lakhs / month</option>
@@ -234,19 +234,19 @@ export function ReferLeadModal({ isOpen, onClose, onSuccess }: ReferLeadModalPro
                   placeholder="Context / Current WhatsApp tools (e.g. Klaviyo, Interakt, Wati)"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9CE06F]"
                 />
               </div>
             </div>
 
             {/* DPDP Act 2023 Consent Checkbox */}
-            <div className="pt-2 p-3 bg-zinc-50 dark:bg-zinc-800/60 rounded-xl border border-zinc-200 dark:border-zinc-700">
+            <div className="pt-2 p-3 bg-zinc-50 dark:bg-[#1A1E18] rounded-xl border border-zinc-200 dark:border-white/10">
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={dpdpConsent}
                   onChange={(e) => setDpdpConsent(e.target.checked)}
-                  className="mt-0.5 rounded text-[#1F251D] focus:ring-[#9CE06F]"
+                  className="mt-0.5 rounded accent-[#9CE06F] text-[#1F251D] focus:ring-[#9CE06F]"
                 />
                 <span className="text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-300">
                   <strong className="text-zinc-900 dark:text-zinc-100">DPDP Act 2023 Consent:</strong> I confirm that this brand founder/team has explicitly agreed to be contacted by Retner for demo and onboarding assistance.

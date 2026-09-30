@@ -256,7 +256,7 @@ export function HomeTab({ onOpenReferModal, onNavigateToTab }: HomeTabProps) {
             </div>
 
             {/* Grid of Offers */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {offers.map((offer) => {
                 const isUnlocked = offer.unlocked || (offer.userProgress || 0) >= offer.targetCount;
                 return (

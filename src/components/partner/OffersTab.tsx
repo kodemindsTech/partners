@@ -63,8 +63,8 @@ export function OffersTab() {
       </div>
 
       {activeSubTab === "live" ? (
-        /* Responsive 3-column Desktop Grid */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        /* Responsive 4-column Desktop Grid */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {offers.map((offer) => {
             const isUnlocked = offer.unlocked || (offer.userProgress || 0) >= offer.targetCount;
             const progress = offer.userProgress || 0;

@@ -316,6 +316,13 @@ export function usePortalStore() {
         status: "not_submitted",
         documents: [],
       },
+      termsAgreement: {
+        agreed: true,
+        version: "2026.09.30-diwali-v1",
+        agreedAt: now,
+        legalEntity: "Coregrow Technologies Private Limited",
+        governingLaw: "Ahmedabad, Gujarat",
+      },
       payoutMethods: [],
       notificationPrefs: { whatsapp: true, email: true },
       stats: {

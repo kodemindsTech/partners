@@ -15,14 +15,18 @@ import {
   CreditCard,
   LogOut,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Scale,
+  CheckCircle2
 } from "lucide-react";
 import { usePortalStore } from "@/lib/store";
+import { PartnerTermsModal } from "@/components/legal/PartnerTermsModal";
 
 export function ProfileTab() {
   const { currentPartner, tiers, commissionPlans } = usePortalStore();
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
 
   if (!currentPartner) return null;
 
@@ -255,6 +259,43 @@ export function ProfileTab() {
             </div>
           </div>
 
+          {/* Legal Agreement & Compliance Card */}
+          <div className="apple-card p-6 space-y-4">
+            <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <Scale className="w-5 h-5 text-[#9CE06F]" />
+              <span>Partner Circle Agreement</span>
+            </h3>
+
+            <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#1A1E18] border border-zinc-200 dark:border-white/10 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400 font-medium">Edition:</span>
+                <span className="font-bold text-zinc-900 dark:text-zinc-100">Diwali Edition (v2026.09.30)</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400 font-medium">Company:</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200 text-right">Coregrow Technologies Pvt Ltd</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400 font-medium">Jurisdiction:</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">Ahmedabad, Gujarat</span>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-zinc-200 dark:border-white/5">
+                <span className="text-zinc-500 dark:text-zinc-400 font-medium">Status:</span>
+                <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-[#9CE06F]">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Enrolled & Active
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setTermsModalOpen(true)}
+              className="w-full py-2.5 rounded-xl bg-zinc-100 dark:bg-[#1A1E18] hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-white/10 text-xs font-bold text-zinc-800 dark:text-zinc-200 transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <FileText className="w-4 h-4 text-[#9CE06F]" />
+              <span>View Full Terms & Conditions</span>
+            </button>
+          </div>
+
           {/* Frequently Asked Questions Accordion */}
           <div className="apple-card p-6 space-y-4">
             <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
@@ -287,6 +328,12 @@ export function ProfileTab() {
           </div>
         </div>
       </div>
+
+      <PartnerTermsModal
+        isOpen={termsModalOpen}
+        onClose={() => setTermsModalOpen(false)}
+        isAccepted={true}
+      />
     </div>
   );
 }

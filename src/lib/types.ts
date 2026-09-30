@@ -92,6 +92,14 @@ export interface PartnerKYC {
   }[];
 }
 
+export interface PartnerTermsAgreement {
+  agreed: boolean;
+  version: string;
+  agreedAt: string;
+  legalEntity: string;
+  governingLaw: string;
+}
+
 export interface Partner {
   id: string;
   name: string;
@@ -109,6 +117,7 @@ export interface Partner {
   referralCode: string;
   customSlug?: string;
   kyc: PartnerKYC;
+  termsAgreement?: PartnerTermsAgreement;
   payoutMethods: PayoutMethod[];
   notificationPrefs: {
     whatsapp: boolean;

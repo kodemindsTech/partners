@@ -214,11 +214,53 @@ export function usePortalStore() {
     return partner;
   };
 
+  // Auth Action: Partner Login (Email/Phone + Password)
+  const partnerLogin = (identifier: string, password?: string) => {
+    const cleanId = identifier.trim().toLowerCase();
+    const cleanPass = password?.trim();
+
+    if (!cleanId || !cleanPass) {
+      throw new Error("Please enter your email/mobile and password.");
+    }
+
+    const partner = globalState.partners.find(
+      (p) =>
+        p.email.toLowerCase() === cleanId ||
+        p.phone.replace(/[^0-9]/g, "").includes(cleanId.replace(/[^0-9]/g, "")) ||
+        p.referralCode.toLowerCase() === cleanId
+    );
+
+    if (!partner) {
+      throw new Error("No partner account found with these credentials. Please sign up first.");
+    }
+
+    if (partner.password && partner.password !== cleanPass) {
+      throw new Error("Incorrect password. Please verify and try again.");
+    }
+
+    if (partner.status === "suspended" || partner.status === "rejected") {
+      throw new Error(`Your partner account is currently ${partner.status}. Please contact partner support.`);
+    }
+
+    globalState = {
+      ...globalState,
+      authSession: {
+        userType: "partner",
+        partnerId: partner.id,
+        lastActiveAt: Date.now(),
+      },
+      currentPartner: partner,
+    };
+    notify();
+    return partner;
+  };
+
   // Auth Action: Partner Signup
   const partnerSignup = (data: {
     name: string;
     phone: string;
     email: string;
+    password?: string;
     type: PartnerType;
     companyName?: string;
     city: string;
@@ -228,9 +270,14 @@ export function usePortalStore() {
     const cleanEmail = data.email.trim().toLowerCase();
     const cleanPhone = data.phone.trim();
     const cleanName = data.name.trim();
+    const cleanPass = data.password?.trim();
 
     if (!cleanName || !cleanEmail || !cleanPhone || !data.city) {
       throw new Error("Please complete all required fields.");
+    }
+
+    if (!cleanPass || cleanPass.length < 6) {
+      throw new Error("Please enter a password with at least 6 characters.");
     }
 
     // Check duplicate email or phone
@@ -254,6 +301,7 @@ export function usePortalStore() {
       name: cleanName,
       phone: cleanPhone,
       email: cleanEmail,
+      password: cleanPass,
       type: data.type,
       companyName: data.companyName?.trim(),
       city: data.city.trim(),
@@ -309,11 +357,10 @@ export function usePortalStore() {
     return newPartner;
   };
 
-  // Auth Action: Admin Login with strict credential checking
-  const adminLogin = (email: string, password?: string, totp?: string) => {
+  // Auth Action: Admin Login with strict email & password checking
+  const adminLogin = (email: string, password?: string) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPass = password?.trim();
-    const cleanTotp = totp?.trim();
 
     // Default master admin check
     const validEmail = (process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@retner.ai").toLowerCase();
@@ -935,6 +982,7 @@ export function usePortalStore() {
     ...state,
     sendPartnerOtp,
     verifyPartnerOtp,
+    partnerLogin,
     partnerSignup,
     adminLogin,
     logout,

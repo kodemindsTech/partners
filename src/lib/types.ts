@@ -97,6 +97,7 @@ export interface Partner {
   name: string;
   phone: string;
   email: string;
+  password?: string;
   type: PartnerType;
   companyName?: string;
   city: string;

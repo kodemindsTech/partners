@@ -14,7 +14,6 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [totp, setTotp] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +24,7 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
     setIsLoading(true);
 
     try {
-      adminLogin(email, password, totp);
+      adminLogin(email, password);
       setIsLoading(false);
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
@@ -102,27 +101,10 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
             </div>
           </div>
 
-          <div>
-            <label className="font-bold text-zinc-700 dark:text-zinc-300 uppercase block mb-1.5">
-              2FA Authenticator Code (Optional)
-            </label>
-            <div className="relative">
-              <KeyRound className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3.5" />
-              <input
-                type="text"
-                maxLength={6}
-                placeholder="6-digit TOTP code"
-                value={totp}
-                onChange={(e) => setTotp(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#1A1E18] text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-[#9CE06F] focus:outline-none"
-              />
-            </div>
-          </div>
-
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-zinc-900 text-white dark:bg-[#9CE06F] dark:text-[#1F251D] font-bold text-sm hover:opacity-95 transition flex items-center justify-center gap-2 shadow-lg"
+            className="w-full py-3.5 rounded-xl bg-zinc-900 text-white dark:bg-[#9CE06F] dark:text-[#1F251D] font-bold text-sm hover:opacity-95 transition flex items-center justify-center gap-2 shadow-lg cursor-pointer"
           >
             <span>{isLoading ? "Verifying..." : "Sign In to Admin"}</span>
             <ArrowRight className="w-4 h-4" />

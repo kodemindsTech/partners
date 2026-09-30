@@ -302,6 +302,9 @@ export interface ProgramSettings {
   tdsRatePercent: number;
   tdsAnnualThresholdPaise: number;
   notificationAlertEmails: string[];
+  campaignStartAt?: string;
+  campaignEndAt?: string;
+  qualifyingPlans?: string[];
 }
 
 export interface AuditLog {

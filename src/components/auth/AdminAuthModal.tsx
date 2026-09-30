@@ -39,12 +39,22 @@ export function AdminAuthModal({ onSuccess, onCancel }: AdminAuthModalProps) {
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white dark:bg-[#151814] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10">
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-900 dark:bg-[#9CE06F]/10 text-[#9CE06F] flex items-center justify-center font-black text-xl mx-auto shadow-md border border-zinc-800 dark:border-[#9CE06F]/20">
-            <Shield className="w-6 h-6 text-[#9CE06F]" />
+          <div className="flex items-center justify-center mb-4">
+            <img
+              src="/brand/logo-light.png"
+              alt="Retner"
+              className="h-9 sm:h-10 w-auto object-contain dark:hidden"
+            />
+            <img
+              src="/brand/logo-dark.png"
+              alt="Retner"
+              className="h-9 sm:h-10 w-auto object-contain hidden dark:block"
+            />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-3">
-            Admin Authentication
-          </h2>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900 text-[#9CE06F] dark:bg-[#9CE06F]/15 dark:text-[#9CE06F] text-[10px] font-mono font-bold tracking-wider uppercase mb-2 border border-zinc-800 dark:border-[#9CE06F]/20">
+            <Shield className="w-3.5 h-3.5" />
+            <span>Admin Authentication</span>
+          </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
             Restricted access for Retner management team
           </p>

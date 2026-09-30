@@ -156,17 +156,16 @@ export function AdminConsole({ onLogout }: AdminConsoleProps) {
       {/* Top Admin Header */}
       <header className="sticky top-0 z-40 bg-zinc-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-zinc-800 shadow-md">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#9CE06F] text-[#1F251D] flex items-center justify-center font-black text-base shadow">
-            R
+          <div className="flex items-center">
+            <img
+              src="/brand/logo-dark.png"
+              alt="Retner"
+              className="h-7 w-auto object-contain"
+            />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-sm tracking-tight text-white">Retner Admin Command Center</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">
-                Super Admin
-              </span>
-            </div>
-          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold uppercase tracking-wider">
+            Admin Console
+          </span>
         </div>
 
         <div className="flex items-center gap-3">

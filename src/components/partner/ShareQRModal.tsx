@@ -58,7 +58,20 @@ export function ShareQRModal({ isOpen, onClose, referralCode, partnerName }: Sha
           <X className="w-5 h-5" />
         </button>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#9CE06F]/20 text-[#1F251D] dark:text-[#9CE06F] text-xs font-semibold mb-3">
+        <div className="flex items-center justify-center mb-2">
+          <img
+            src="/brand/logo-light.png"
+            alt="Retner"
+            className="h-6 w-auto object-contain dark:hidden"
+          />
+          <img
+            src="/brand/logo-dark.png"
+            alt="Retner"
+            className="h-6 w-auto object-contain hidden dark:block"
+          />
+        </div>
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#9CE06F]/20 text-[#1F251D] dark:text-[#9CE06F] text-[11px] font-semibold mb-2">
           <span>● Partner Referral QR</span>
         </div>
 

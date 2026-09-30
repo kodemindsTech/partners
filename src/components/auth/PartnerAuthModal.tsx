@@ -121,10 +121,19 @@ export function PartnerAuthModal({ onSuccess }: PartnerAuthModalProps) {
       <div className="w-full max-w-md bg-white dark:bg-[#151814] rounded-3xl p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-[#1F251D] dark:bg-[#9CE06F] text-[#9CE06F] dark:text-[#1F251D] flex items-center justify-center font-black text-xl mx-auto shadow-md">
-            R
+          <div className="flex items-center justify-center mb-4">
+            <img
+              src="/brand/logo-light.png"
+              alt="Retner"
+              className="h-9 sm:h-10 w-auto object-contain dark:hidden"
+            />
+            <img
+              src="/brand/logo-dark.png"
+              alt="Retner"
+              className="h-9 sm:h-10 w-auto object-contain hidden dark:block"
+            />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-3">
+          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             {mode === "login" ? "Partner Portal Login" : "Partner Registration"}
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">

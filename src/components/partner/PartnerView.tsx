@@ -101,19 +101,21 @@ export function PartnerView({ onLogout }: PartnerViewProps) {
       {/* Top Header */}
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#121512]/90 backdrop-blur-md px-6 lg:px-10 py-3.5 flex items-center justify-between border-b border-black/5 dark:border-white/10 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#1F251D] dark:bg-[#9CE06F] text-[#9CE06F] dark:text-[#1F251D] flex items-center justify-center font-black text-base tracking-wider shadow-sm">
-            R
+          <div className="flex items-center">
+            <img
+              src="/brand/logo-light.png"
+              alt="Retner"
+              className="h-7 sm:h-8 w-auto object-contain dark:hidden"
+            />
+            <img
+              src="/brand/logo-dark.png"
+              alt="Retner"
+              className="h-7 sm:h-8 w-auto object-contain hidden dark:block"
+            />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100">
-                retner
-              </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#9CE06F]/25 text-[#1F251D] dark:text-[#9CE06F] uppercase tracking-wider">
-                Partner Portal
-              </span>
-            </div>
-          </div>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#9CE06F]/25 text-[#1F251D] dark:text-[#9CE06F] uppercase tracking-wider">
+            Partner Portal
+          </span>
         </div>
 
         {/* Right action controls */}
